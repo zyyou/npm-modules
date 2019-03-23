@@ -9,7 +9,7 @@ npm i http-sync -S
 
 # 引用
 ```
-const httpSync = require('../modules/https-sync');
+const httpSync = require('https-sync');
 ```
 
 # 调用
