@@ -11,7 +11,7 @@ const userAgent = require('koa-useragent');
 const escapeHtml = require('escape-html');
 
 const hylog = require('./lib/log')('app');
-const message = require('./lib/message');
+const bcklib = require('bcklib');
 
 const appConfig = require('./config/appconfig');
 
@@ -30,7 +30,7 @@ onerror(app, {
     switch (ctx.accepts('json', 'html')) {
       case 'json':
         console.log('json  err');
-        ctx.body = JSON.stringify(message.build(true, err.message, {}, err.status));
+        ctx.body = JSON.stringify(bcklib.message(true, err.message, {}, err.status));
         break;
       default:
         console.log('html  err');

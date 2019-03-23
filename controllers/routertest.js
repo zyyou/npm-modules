@@ -1,6 +1,9 @@
 'use strict';
 const router = require('koa-router')();
+const httpSync = require('https-sync');
+
 const mvcrouter = require('../modules/koa-mvcrouter');
+
 
 mvcrouter.init(router, module);
 
@@ -58,14 +61,12 @@ mvcrouter.jsonDELETE('/rest/:id', async function (ctx) {
 
 //测试RESTful PUT
 mvcrouter.jsonGET('/restput', async function (ctx) {
-  let httpSync = require('../lib/http-sync');
   let res = await httpSync.putJSON('http://localhost:3000/test/rest', { val1: 123, val2: 'test put' });
   return res;
 });
 
 //测试RESTful DELETE
 mvcrouter.jsonGET('/restdel', async function (ctx) {
-  let httpSync = require('../lib/http-sync');
   let res = await httpSync.deleteJSON('http://localhost:3000/test/rest/22', { val1: 222, val2: 'test delete' });
   return res;
 });
@@ -77,7 +78,6 @@ mvcrouter.textGET('/text', function (ctx) {
 
 //测试GET响应JSON 且 远程获取
 mvcrouter.jsonGET('/json', async function (ctx) {
-  let httpSync = require('../lib/http-sync');
   let res = httpSync.postJSON('http://localhost:3001/test/json', { val1: 123, val2: 'abc' });
   return res;
 }, { val: 111, action: 'jsonGet' });
@@ -92,7 +92,6 @@ mvcrouter.jsonPOST('/json', function (ctx) {
 
 //测试响应文本且远程获取
 mvcrouter.textGET('/req', async function (ctx) {
-  let httpSync = require('../lib/http-sync');
   let url = 'https://www.baidu.com';
   let res = await httpSync.get(url);
   return JSON.stringify(res);
