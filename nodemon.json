@@ -1,0 +1,12 @@
+{
+    "watch": [
+        "app.js",
+        "routes.js",
+        "config/*.*",
+        "controllers",
+        "models",
+        "middlewares",
+        "lib"
+    ],
+    "ext": "js"
+}
