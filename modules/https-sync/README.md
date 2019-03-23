@@ -1,7 +1,7 @@
 # https-sync
-nodejs http、https 同步请求
-通过请求地址自动识别http或者https
-支持 GET、POST、PUT、DELETE
+- nodejs http、https 同步请求
+- 通过请求地址自动识别http或者https
+- 支持 GET、POST、PUT、DELETE
 
 # 安装到工程
 ```
