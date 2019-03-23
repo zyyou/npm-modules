@@ -1,0 +1,27 @@
+{
+  "name": "https-sync",
+  "version": "0.1.0",
+  "dependencies": {
+    "debug": "^2.6.3"
+  },
+  "description": "nodejs http、https 同步请求",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zyyou/https-sync"
+  },
+  "keywords": [
+    "http",
+    "https",
+    "sync",
+    "http-sync",
+    "https-sync",
+    "sync-http",
+    "sync-https"
+  ],
+  "author": "zyy",
+  "license": "MIT"
+}
