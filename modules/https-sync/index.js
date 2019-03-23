@@ -3,8 +3,7 @@
 var debug = require('debug')('https-sync');
 const nurl = require('url');
 const queryString = require('querystring');
-const message = require('./message');
-const log = require('./log')('HttpSync');
+const bcklib = require('bcklib');
 
 /**
  * 同步HTTP请求
@@ -43,12 +42,12 @@ HttpSync.prototype.request = function (opts, data) {
 
         debug('request res=%s', resStr);
 
-        resolve(message.build(false, 'ok', resData, message.code.ok));
+        resolve(bcklib.retMsg(false, 'ok', resData, bcklib.retCode.ok));
       });
     });
     req.on(('error'), (e) => {
-      log.fError('请求异常', e.message, opts, e);
-      reject(message.build(true, '请求异常 ' + e.message, {}, message.code.sysErr));
+      debug('请求异常 %s %j %j', e.message, opts, e);
+      reject(bcklib.retMsg(true, '请求异常 ' + e.message, {}, bcklib.retCode.sysErr));
     });
     if (data) {
       req.write(data);

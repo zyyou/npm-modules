@@ -1,7 +1,7 @@
 'use strict';
 const router = require('koa-router')();
 const mvcrouter = require('../modules/koa-mvcrouter');
-const nlib = require('../modules/nlib');
+const nlib = require('../modules/bcklib');
 
 mvcrouter.init(router, module);
 

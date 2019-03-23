@@ -2,7 +2,8 @@
   "name": "https-sync",
   "version": "0.1.0",
   "dependencies": {
-    "debug": "^2.6.3"
+    "debug": "^2.6.3",
+    "bcklib": "^0.1.0"
   },
   "description": "nodejs http、https 同步请求",
   "main": "index.js",
