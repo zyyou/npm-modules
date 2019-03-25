@@ -71,6 +71,7 @@ app.use(bodyparser({
 app.use(json());
 //指定静态文件目录，否则不能静态访问
 app.use(require('koa-static')(__dirname + '/public'));
+app.use(require('koa-static')(__dirname + '/docs'));
 
 // 注册路由
 app.use(mvcrouter.load());
