@@ -1,6 +1,5 @@
 'use strict';
 
-
 /**
  * 构建公共消息对象
  *
@@ -23,6 +22,11 @@ exports.retCode = {
   sysErr: 1000,
   paramErr: 1001
 }
+
+exports.cutils = require('./src/client_utils.js');
+
+
+
 
 
 
