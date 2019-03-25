@@ -5,7 +5,7 @@
 
 # 安装到工程
 ```
-npm i http-sync -S
+npm i https-sync -S
 ```
 
 # 引用
