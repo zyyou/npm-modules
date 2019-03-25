@@ -1,0 +1,6 @@
+- Translations
+  - [:cn: ??](/)
+  - [:uk: English](/en/)
+  - [:de: Deutsch](/de-de/)
+  - [:es: Spanish](/es/)
+  - [:ru: Russian](/ru/)
