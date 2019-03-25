@@ -19,4 +19,5 @@ let res = await httpSync.get(url);
 ```
 
 # 其他资料
-QQ群：13924029
+- 文档 https://libdoc.bianchengke.com
+- QQ群：13924029

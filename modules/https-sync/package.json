@@ -1,6 +1,6 @@
 {
   "name": "https-sync",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "dependencies": {
     "debug": "^2.6.3",
     "bcklib": "^0.1.0"

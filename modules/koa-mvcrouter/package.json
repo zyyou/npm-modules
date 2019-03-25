@@ -1,6 +1,6 @@
 {
   "name": "koa-mvcrouter",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "dependencies": {
     "koa-compose": "^3.0.0",
     "glob": "^7.1.3",
