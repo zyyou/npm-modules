@@ -10,13 +10,11 @@ const logger = require('koa-logger');
 const userAgent = require('koa-useragent');
 const escapeHtml = require('escape-html');
 
-const hylog = require('./lib/log')('app');
-const bcklib = require('bcklib');
 
-const appConfig = require('./config/appconfig');
-
+const bcklib = require('./modules/bcklib');
 const mvcrouter = require('./modules/koa-mvcrouter');
 
+bcklib.log.init(bcklib.loadConfig('logconf.js'))
 
 // 全局异常捕获
 app.on('error', (err, ctx) => {
@@ -57,7 +55,7 @@ render(app, {
 });
 
 app.use(async (ctx, next) => {
-  ctx._appConfig = appConfig;
+  ctx._appConfig = bcklib.loadConfig();
   await next();
 });
 
