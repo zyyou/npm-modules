@@ -6,6 +6,7 @@
         "controllers",
         "models",
         "middlewares",
+        "modules",
         "lib"
     ],
     "ext": "js"

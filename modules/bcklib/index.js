@@ -16,12 +16,24 @@ exports.retMsg = (hasErr, msg, data, code) => {
   return { hasErr: hasErr, message: msg, data: data, code: code };
 };
 
+//通用返回代码
 exports.retCode = {
   unknown: -1,
   ok: 1,
   sysErr: 1000,
   paramErr: 1001
-}
+};
+
+/**
+ * 加载配置文件
+ *
+ * @param {String} fileName 配置文件名
+ * @returns
+ */
+exports.loadConfig = (fileName) => {
+  let cfg = require('./src/config');
+  return cfg.load(fileName);
+};
 
 exports.cutils = require('./src/client_utils.js');
 

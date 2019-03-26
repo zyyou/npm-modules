@@ -20,4 +20,15 @@ mvcrouter.jsonGET('/cip', function (ctx) {
   return retMsg;
 });
 
+mvcrouter.jsonGET('/config', function (ctx) {
+
+  var config = bcklib.loadConfig();
+
+  console.log('config:', config);
+
+  //config = bcklib.loadConfig('logconf.json');
+
+  return config;
+});
+
 module.exports = router

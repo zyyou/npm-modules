@@ -20,8 +20,8 @@ const mvcrouter = require('./modules/koa-mvcrouter');
 
 // 全局异常捕获
 app.on('error', (err, ctx) => {
-  //console.error('server error', err);
-  hylog.fError('server error\r\n\terr:' + JSON.stringify(err) + '\r\n\tctx:' + JSON.stringify(ctx));
+  console.error('server error', err);
+  //hylog.fError('server error\r\n\terr:' + JSON.stringify(err) + '\r\n\tctx:' + JSON.stringify(ctx));
 });
 
 // error handler
