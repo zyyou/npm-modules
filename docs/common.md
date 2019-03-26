@@ -88,7 +88,11 @@ bcklib.loadConfig()
 env: {
       NODE_ENV: 'production',
       config_path:'/Users/zyy/config' //支持 ./ 或 / ，分别表示当前工程根目录和系统根目录
-    }
+    },
+env_development: {
+      NODE_ENV: 'development',
+      config_path:'./config'
+    },
 ```
 
 - 示例配置文件：appconfig.js
