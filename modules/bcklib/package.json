@@ -1,10 +1,6 @@
 {
   "name": "bcklib",
-<<<<<<< HEAD
   "version": "0.3.0",
-=======
-  "version": "0.2.1",
->>>>>>> f7d9a460508bfc8345f4446089ca39ee0505ba84
   "dependencies": {
   },
   "description": "nodejs 常用开发库",
