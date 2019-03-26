@@ -1,4 +1,11 @@
+<<<<<<< HEAD
 ## getClientIP
+=======
+## 说明
+客户端库
+
+## 取客户端IP getClientIP
+>>>>>>> f7d9a460508bfc8345f4446089ca39ee0505ba84
 获取客户端IP，兼容代理
 - 函数调用
 ```javascript

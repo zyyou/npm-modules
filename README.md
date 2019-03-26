@@ -1,2 +1,5 @@
-# npm-modules
-npm 包 发布在 https://www.npmjs.com/~zyyou
+# 发布地址
+https://www.npmjs.com/~zyyou
+
+# 文档
+https://bcklib.bianchengke.com/
