@@ -1,4 +1,4 @@
-## 取客户端IP getClientIP
+## getClientIP
 获取客户端IP，兼容代理
 - 函数调用
 ```javascript
