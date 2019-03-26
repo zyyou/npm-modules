@@ -103,4 +103,5 @@ module.exports = {
     author: 'zyy'
 }
 ```
+!> 注意：如果环境变量中没有配置config_path，则默认工程目录的config文件夹
 
