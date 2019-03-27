@@ -6,20 +6,13 @@ const queryString = require('querystring');
 const bcklib = require('bcklib');
 
 /**
- * 同步HTTP请求
- *
- */
-function HttpSync() {
-}
-
-/**
  * 发起请求，自识别http或https
  *
  * @param {URL} opts URL对象.
  * @param {JSON} data
  * @returns
  */
-HttpSync.prototype.request = function (opts, data) {
+function request (opts, data) {
   opts.headers = opts.headers || {};
   opts.headers.httpsync = true;
   opts.timeout = opts.timeout || 10 * 1000;
@@ -63,11 +56,11 @@ HttpSync.prototype.request = function (opts, data) {
  * @param {JSON} reqHeaders 请求头信息
  * @returns
  */
-HttpSync.prototype.get = function (url, reqHeaders) {
+exports.get = function (url, reqHeaders) {
   let opts = nurl.parse(url);
   opts.method = 'GET';
   opts.headers = reqHeaders || {};
-  return this.request(opts);
+  return request(opts);
 }
 
 /**
@@ -78,13 +71,13 @@ HttpSync.prototype.get = function (url, reqHeaders) {
  * @param {JSON} reqHeaders 请求头信息
  * @returns
  */
-HttpSync.prototype.postJSON = function (url, data, reqHeaders) {
+exports.postJSON = function (url, data, reqHeaders) {
   let opts = nurl.parse(url);
   opts.method = 'POST';
   opts.isJson = true;
   opts.headers = reqHeaders || {};
   opts.headers['Content-Type'] = 'application/json';
-  return this.request(opts, data);
+  return request(opts, data);
 }
 
 /**
@@ -95,13 +88,13 @@ HttpSync.prototype.postJSON = function (url, data, reqHeaders) {
  * @param {JSON} reqHeaders 请求头信息
  * @returns
  */
-HttpSync.prototype.putJSON = function (url, data, reqHeaders) {
+exports.putJSON = function (url, data, reqHeaders) {
   let opts = nurl.parse(url);
   opts.method = 'PUT';
   opts.isJson = true;
   opts.headers = reqHeaders || {};
   opts.headers['Content-Type'] = 'application/json';
-  return this.request(opts, data);
+  return request(opts, data);
 }
 
 /**
@@ -112,13 +105,12 @@ HttpSync.prototype.putJSON = function (url, data, reqHeaders) {
  * @param {JSON} reqHeaders 请求头信息
  * @returns
  */
-HttpSync.prototype.deleteJSON = function (url, data, reqHeaders) {
+exports.deleteJSON = function (url, data, reqHeaders) {
   let opts = nurl.parse(url);
   opts.method = 'DELETE';
   opts.isJson = true;
   opts.headers = reqHeaders || {};
   opts.headers['Content-Type'] = 'application/json';
-  return this.request(opts, data);
+  return request(opts, data);
 }
 
-module.exports = new HttpSync();
