@@ -2,18 +2,18 @@
 koa2 mvc 路由
 
 # 安装到工程
-```
+```shell
 npm i koa-mvcrouter -S
 ```
 
 # 引用
-```
+```javascript
 const mvcrouter = require('koa-mvcrouter');
 ```
 
 # 加载路由
 app.js中
-```
+```javascript
 app.use(mvcrouter.load());
 ```
 
@@ -34,9 +34,8 @@ project
 ```
 
 # 控制器（路由）中 action 示例
-```
-//controller初始化
-mvcrouter.init(router, module);
+```javascript
+const mvcrouter = require('../modules/koa-mvcrouter');
 
 mvcrouter.viewGET('/', function (ctx) {
   return {
@@ -82,6 +81,8 @@ mvcrouter.jsonDELETE('/rest/:id', async function (ctx) {
 mvcrouter.textGET('/text', function (ctx) {
   return 'aaaaabbbb111xxx';
 });
+
+module.exports = mvcrouter;
 
 ```
 

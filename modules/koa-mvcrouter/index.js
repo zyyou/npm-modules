@@ -6,54 +6,6 @@ const glob = require('glob');
 const npath = require('path');
 const nfs = require('fs');
 
-/**
- * 加载路由
- *
- * @returns
- */
-exports.load = () => {
-    var routers = [];
-    var indexFile;
-    glob.sync(npath.resolve('controllers', '**', '*.js')).forEach(file => {
-        if (file.endsWith('index.js')) {
-            indexFile = file;
-        } else {
-            routers.push(require(file).routes());
-            routers.push(require(file).allowedMethods());
-        }
-    });
-
-    //index单独处理，否则URL必须带controller路径，index建议只写一个没有前缀的action，否则容易跟其他controller冲突
-    if (indexFile) {
-        let index = require(indexFile);
-        routers.push(index.routes());
-        routers.push(index.allowedMethods());
-    }
-
-    return compose(routers);
-};
-
-
-/**
- *  当前路由
- */
-exports.router = {};
-
-/**
- *
- * 初始化控制器
- * @param {'koa-router'} router Koa-Router对象
- * @param {*} m 当前模块 moudle
- */
-exports.init = function (router, m) {
-    this.router = router;
-    let cpath = m.filename.substring(m.filename.indexOf('/controllers/') + 12, m.filename.length - 3);
-    //index路由不需要设置，否则/无法访问
-    if (cpath != '/index') {
-        this.router.prefix(cpath);
-    }
-    debug('注册路由：%s 文件：%s', cpath, m.filename);
-};
 
 /**
  * 设置响应header
@@ -61,7 +13,7 @@ exports.init = function (router, m) {
  * @param {*} res
  * @param {JSON} headers
  */
-exports.setHeader = function (res, headers) {
+function setHeader(res, headers) {
     headers = headers || {};
     for (var key in headers) {
         res.setHeader(key, headers[key]);
@@ -74,7 +26,7 @@ exports.setHeader = function (res, headers) {
  * @param {*} res
  * @param {JSON} headers
  */
-exports.buildView = function (ctx, view, layout) {
+function buildView(ctx, view, layout) {
     if (!view) {
         let pi = ctx._matchedRoute.indexOf(':');
         let path = pi == -1 ? ctx._matchedRoute : ctx._matchedRoute.substring(0, pi);
@@ -125,7 +77,7 @@ exports.buildView = function (ctx, view, layout) {
  * @param {String} view 视图，为空自动匹配
  * @param {String} layout 布局，为空自动匹配
  */
-exports.viewAction = async function (ctx, action, resHeaders, view, layout) {
+async function viewAction(ctx, action, resHeaders, view, layout) {
     let data = await action(ctx);
     data = data || {};
 
@@ -135,12 +87,12 @@ exports.viewAction = async function (ctx, action, resHeaders, view, layout) {
         data.title = ctx._appConfig.title;
     }
 
-    let viewData = this.buildView(ctx, view, layout);
+    let viewData = buildView(ctx, view, layout);
     data.layout = viewData.layout;
 
     resHeaders = resHeaders || {};
     resHeaders['Content-Type'] = resHeaders['Content-Type'] || 'text/html; charset=utf-8';
-    this.setHeader(ctx.res, resHeaders);
+    setHeader(ctx.res, resHeaders);
     await ctx.render(viewData.view, data);
     debug('%s %s View=%j \r\n\tData=%j\r\n\tParams=%j\r\n\tQuery=%j', ctx.method, ctx.path, viewData, ctx.request.body, ctx.params, ctx.request.query);
 };
@@ -153,14 +105,65 @@ exports.viewAction = async function (ctx, action, resHeaders, view, layout) {
  * @param {JSON} resHeaders 响应头数据
  * @param {String} contentType
  */
-exports.reqAction = async function (ctx, action, resHeaders, contentType) {
+async function reqAction(ctx, action, resHeaders, contentType) {
     let data = await action(ctx);
     data = data || {};
     resHeaders = resHeaders || {};
     resHeaders['Content-Type'] = contentType;
-    this.setHeader(ctx.res, resHeaders);
+    setHeader(ctx.res, resHeaders);
     ctx.body = data;
     debug('%s %s Content-Type=%s\r\n\tData=%j\r\n\tParams=%j\r\n\tQuery=%j', ctx.method, ctx.path, contentType, ctx.request.body, ctx.params, ctx.request.query);
+};
+
+/**
+ *  当前路由
+ */
+var mRouter;
+
+/**
+ * 加载路由
+ *
+ * @returns
+ */
+exports.load = () => {
+    var routers = [];
+    var indexFile;
+    glob.sync(npath.resolve('controllers', '**', '*.js')).forEach(file => {
+
+        let cpath = file.substring(file.indexOf('/controllers/') + 12, file.length - 3);
+        debug('注册路由：%s 文件：%s', cpath, file);
+
+        if (file.endsWith('index.js')) {
+            indexFile = file;
+        } else {
+            mRouter = require('koa-router')();
+            require(file);
+            mRouter.prefix(cpath);
+
+            routers.push(mRouter.routes());
+            routers.push(mRouter.allowedMethods());
+        }
+    });
+
+    //index单独处理，否则URL必须带controller路径，index建议只写一个没有前缀的action，否则容易跟其他controller冲突
+    if (indexFile) {
+        mRouter = require('koa-router')();
+        require(indexFile);
+        routers.push(mRouter.routes());
+        routers.push(mRouter.allowedMethods());
+    }
+
+    return compose(routers);
+};
+
+
+/**
+ *
+ * 初始化控制器
+ * @param {'koa-router'} router Koa-Router对象
+ */
+exports.init = function (router) {
+    console.warn('koa-mvcrouter 1.X 已不需要调用init');
 };
 
 
@@ -176,8 +179,8 @@ exports.reqAction = async function (ctx, action, resHeaders, contentType) {
  * @param {String} layout 布局，为空自动匹配
  */
 exports.viewGET = function (path, action, resHheaders, view, layout) {
-    this.router.get(path, async (ctx, next) => {
-        await this.viewAction(ctx, action, resHheaders, view, layout);
+    mRouter.get(path, async (ctx, next) => {
+        await viewAction(ctx, action, resHheaders, view, layout);
     });
 };
 
@@ -191,8 +194,8 @@ exports.viewGET = function (path, action, resHheaders, view, layout) {
  * @param {String} layout 布局，为空自动匹配
  */
 exports.viewPOST = function (path, action, resHheaders, view, layout) {
-    this.router.post(path, async (ctx, next) => {
-        await this.viewAction(ctx, action, resHheaders, view, layout);
+    mRouter.post(path, async (ctx, next) => {
+        await viewAction(ctx, action, resHheaders, view, layout);
     });
 };
 
@@ -206,8 +209,8 @@ exports.viewPOST = function (path, action, resHheaders, view, layout) {
  */
 exports.jsonGET = function (path, action, resHheaders, charset) {
     charset = charset || 'utf-8';
-    this.router.get(path, async (ctx, next) => {
-        await this.reqAction(ctx, action, resHheaders, 'application/json;charset=' + charset);
+    mRouter.get(path, async (ctx, next) => {
+        await reqAction(ctx, action, resHheaders, 'application/json;charset=' + charset);
     });
 };
 
@@ -221,8 +224,8 @@ exports.jsonGET = function (path, action, resHheaders, charset) {
  */
 exports.jsonPOST = function (path, action, resHheaders, charset) {
     charset = charset || 'utf-8';
-    this.router.post(path, async (ctx, next) => {
-        await this.reqAction(ctx, action, resHheaders, 'application/json;charset=' + charset);
+    mRouter.post(path, async (ctx, next) => {
+        await reqAction(ctx, action, resHheaders, 'application/json;charset=' + charset);
     });
 };
 
@@ -236,8 +239,8 @@ exports.jsonPOST = function (path, action, resHheaders, charset) {
  */
 exports.jsonPUT = function (path, action, resHheaders, charset) {
     charset = charset || 'utf-8';
-    this.router.put(path, async (ctx, next) => {
-        await this.reqAction(ctx, action, resHheaders, 'application/json;charset=' + charset);
+    mRouter.put(path, async (ctx, next) => {
+        await reqAction(ctx, action, resHheaders, 'application/json;charset=' + charset);
     });
 };
 
@@ -251,8 +254,8 @@ exports.jsonPUT = function (path, action, resHheaders, charset) {
  */
 exports.jsonDELETE = function (path, action, resHheaders, charset) {
     charset = charset || 'utf-8';
-    this.router.delete(path, async (ctx, next) => {
-        await this.reqAction(ctx, action, resHheaders, 'application/json;charset=' + charset);
+    mRouter.delete(path, async (ctx, next) => {
+        await reqAction(ctx, action, resHheaders, 'application/json;charset=' + charset);
     });
 };
 
@@ -266,8 +269,8 @@ exports.jsonDELETE = function (path, action, resHheaders, charset) {
  */
 exports.textGET = function (path, action, resHheaders, charset) {
     charset = charset || 'utf-8';
-    this.router.get(path, async (ctx, next) => {
-        await this.reqAction(ctx, action, resHheaders, 'text/plain;charset=' + charset);
+    mRouter.get(path, async (ctx, next) => {
+        await reqAction(ctx, action, resHheaders, 'text/plain;charset=' + charset);
     });
 };
 
@@ -281,20 +284,7 @@ exports.textGET = function (path, action, resHheaders, charset) {
  */
 exports.textPOST = function (path, action, resHheaders, charset) {
     charset = charset || 'utf-8';
-    this.router.post(path, async (ctx, next) => {
-        await this.reqAction(ctx, action, resHheaders, 'text/plain;charset=' + charset);
+    mRouter.post(path, async (ctx, next) => {
+        await reqAction(ctx, action, resHheaders, 'text/plain;charset=' + charset);
     });
 };
-
-
-
-
-/**
- * 返回当前路由，用于导出到模块 module.exports = getRouter();
- *
- * @returns
- */
-exports.getRouter = function () {
-    return this.router;
-};
-
