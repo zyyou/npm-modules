@@ -1,10 +1,7 @@
 'use strict';
-const router = require('koa-router')();
 const mvcrouter = require('../modules/koa-mvcrouter');
 
 const httpSync = require('../modules/https-sync');
-
-mvcrouter.init(router, module);
 
 //测试响应文本且远程获取
 mvcrouter.textGET('/req', async function (ctx) {
@@ -13,4 +10,4 @@ mvcrouter.textGET('/req', async function (ctx) {
   return JSON.stringify(res);
 });
 
-module.exports = router
+module.exports = mvcrouter;

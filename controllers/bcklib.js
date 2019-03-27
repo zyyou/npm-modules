@@ -1,9 +1,6 @@
 'use strict';
-const router = require('koa-router')();
 const mvcrouter = require('../modules/koa-mvcrouter');
 const bcklib = require('../modules/bcklib');
-
-mvcrouter.init(router, module);
 
 //index controller中建议只写此action
 mvcrouter.jsonGET('/retmsg', function (ctx) {
@@ -44,4 +41,4 @@ mvcrouter.jsonGET('/log', function (ctx) {
   return {};
 });
 
-module.exports = router
+module.exports = mvcrouter;
