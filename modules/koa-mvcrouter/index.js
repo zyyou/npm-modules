@@ -6,17 +6,12 @@ const glob = require('glob');
 const npath = require('path');
 const nfs = require('fs');
 
-
-function mvcrouter() {
-
-};
-
 /**
  * 加载路由
  *
  * @returns
  */
-mvcrouter.prototype.load = () => {
+exports.load = () => {
     var routers = [];
     var indexFile;
     glob.sync(npath.resolve('controllers', '**', '*.js')).forEach(file => {
@@ -42,7 +37,7 @@ mvcrouter.prototype.load = () => {
 /**
  *  当前路由
  */
-mvcrouter.prototype.router = {};
+exports.router = {};
 
 /**
  *
@@ -50,7 +45,7 @@ mvcrouter.prototype.router = {};
  * @param {'koa-router'} router Koa-Router对象
  * @param {*} m 当前模块 moudle
  */
-mvcrouter.prototype.init = function (router, m) {
+exports.init = function (router, m) {
     this.router = router;
     let cpath = m.filename.substring(m.filename.indexOf('/controllers/') + 12, m.filename.length - 3);
     //index路由不需要设置，否则/无法访问
@@ -66,7 +61,7 @@ mvcrouter.prototype.init = function (router, m) {
  * @param {*} res
  * @param {JSON} headers
  */
-mvcrouter.prototype.setHeader = function (res, headers) {
+exports.setHeader = function (res, headers) {
     headers = headers || {};
     for (var key in headers) {
         res.setHeader(key, headers[key]);
@@ -79,7 +74,7 @@ mvcrouter.prototype.setHeader = function (res, headers) {
  * @param {*} res
  * @param {JSON} headers
  */
-mvcrouter.prototype.buildView = function (ctx, view, layout) {
+exports.buildView = function (ctx, view, layout) {
     if (!view) {
         let pi = ctx._matchedRoute.indexOf(':');
         let path = pi == -1 ? ctx._matchedRoute : ctx._matchedRoute.substring(0, pi);
@@ -130,7 +125,7 @@ mvcrouter.prototype.buildView = function (ctx, view, layout) {
  * @param {String} view 视图，为空自动匹配
  * @param {String} layout 布局，为空自动匹配
  */
-mvcrouter.prototype.viewAction = async function (ctx, action, resHeaders, view, layout) {
+exports.viewAction = async function (ctx, action, resHeaders, view, layout) {
     let data = await action(ctx);
     data = data || {};
 
@@ -158,7 +153,7 @@ mvcrouter.prototype.viewAction = async function (ctx, action, resHeaders, view, 
  * @param {JSON} resHeaders 响应头数据
  * @param {String} contentType
  */
-mvcrouter.prototype.reqAction = async function (ctx, action, resHeaders, contentType) {
+exports.reqAction = async function (ctx, action, resHeaders, contentType) {
     let data = await action(ctx);
     data = data || {};
     resHeaders = resHeaders || {};
@@ -180,7 +175,7 @@ mvcrouter.prototype.reqAction = async function (ctx, action, resHeaders, content
  * @param {String} view 视图，为空自动匹配
  * @param {String} layout 布局，为空自动匹配
  */
-mvcrouter.prototype.viewGET = function (path, action, resHheaders, view, layout) {
+exports.viewGET = function (path, action, resHheaders, view, layout) {
     this.router.get(path, async (ctx, next) => {
         await this.viewAction(ctx, action, resHheaders, view, layout);
     });
@@ -195,7 +190,7 @@ mvcrouter.prototype.viewGET = function (path, action, resHheaders, view, layout)
  * @param {String} view 视图，为空自动匹配
  * @param {String} layout 布局，为空自动匹配
  */
-mvcrouter.prototype.viewPOST = function (path, action, resHheaders, view, layout) {
+exports.viewPOST = function (path, action, resHheaders, view, layout) {
     this.router.post(path, async (ctx, next) => {
         await this.viewAction(ctx, action, resHheaders, view, layout);
     });
@@ -209,7 +204,7 @@ mvcrouter.prototype.viewPOST = function (path, action, resHheaders, view, layout
  * @param {JSON} resHheaders 响应头数据
  * @param {String} charset 响应数据编码，默认utf-8
  */
-mvcrouter.prototype.jsonGET = function (path, action, resHheaders, charset) {
+exports.jsonGET = function (path, action, resHheaders, charset) {
     charset = charset || 'utf-8';
     this.router.get(path, async (ctx, next) => {
         await this.reqAction(ctx, action, resHheaders, 'application/json;charset=' + charset);
@@ -224,7 +219,7 @@ mvcrouter.prototype.jsonGET = function (path, action, resHheaders, charset) {
  * @param {JSON} resHheaders 响应头数据
  * @param {String} charset 响应数据编码，默认utf-8
  */
-mvcrouter.prototype.jsonPOST = function (path, action, resHheaders, charset) {
+exports.jsonPOST = function (path, action, resHheaders, charset) {
     charset = charset || 'utf-8';
     this.router.post(path, async (ctx, next) => {
         await this.reqAction(ctx, action, resHheaders, 'application/json;charset=' + charset);
@@ -239,7 +234,7 @@ mvcrouter.prototype.jsonPOST = function (path, action, resHheaders, charset) {
  * @param {JSON} resHheaders 响应头数据
  * @param {String} charset 响应数据编码，默认utf-8
  */
-mvcrouter.prototype.jsonPUT = function (path, action, resHheaders, charset) {
+exports.jsonPUT = function (path, action, resHheaders, charset) {
     charset = charset || 'utf-8';
     this.router.put(path, async (ctx, next) => {
         await this.reqAction(ctx, action, resHheaders, 'application/json;charset=' + charset);
@@ -254,7 +249,7 @@ mvcrouter.prototype.jsonPUT = function (path, action, resHheaders, charset) {
  * @param {JSON} resHheaders 响应头数据
  * @param {String} charset 响应数据编码，默认utf-8
  */
-mvcrouter.prototype.jsonDELETE = function (path, action, resHheaders, charset) {
+exports.jsonDELETE = function (path, action, resHheaders, charset) {
     charset = charset || 'utf-8';
     this.router.delete(path, async (ctx, next) => {
         await this.reqAction(ctx, action, resHheaders, 'application/json;charset=' + charset);
@@ -269,7 +264,7 @@ mvcrouter.prototype.jsonDELETE = function (path, action, resHheaders, charset) {
  * @param {JSON} resHheaders 响应头数据
  * @param {String} charset 响应数据编码，默认utf-8
  */
-mvcrouter.prototype.textGET = function (path, action, resHheaders, charset) {
+exports.textGET = function (path, action, resHheaders, charset) {
     charset = charset || 'utf-8';
     this.router.get(path, async (ctx, next) => {
         await this.reqAction(ctx, action, resHheaders, 'text/plain;charset=' + charset);
@@ -284,7 +279,7 @@ mvcrouter.prototype.textGET = function (path, action, resHheaders, charset) {
  * @param {JSON} resHheaders 响应头数据
  * @param {String} charset 响应数据编码，默认utf-8
  */
-mvcrouter.prototype.textPOST = function (path, action, resHheaders, charset) {
+exports.textPOST = function (path, action, resHheaders, charset) {
     charset = charset || 'utf-8';
     this.router.post(path, async (ctx, next) => {
         await this.reqAction(ctx, action, resHheaders, 'text/plain;charset=' + charset);
@@ -299,9 +294,7 @@ mvcrouter.prototype.textPOST = function (path, action, resHheaders, charset) {
  *
  * @returns
  */
-mvcrouter.prototype.getRouter = function () {
+exports.getRouter = function () {
     return this.router;
 };
 
-
-module.exports = new mvcrouter();
