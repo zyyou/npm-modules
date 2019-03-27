@@ -33,10 +33,10 @@ project
         test.ejs
 ```
 
-## 控制器（路由）中 action 示例
+## 控制器（路由）示例
 ```javascript
-//controller初始化
-mvcrouter.init(router, module);
+
+const mvcrouter = require('../modules/koa-mvcrouter');
 
 mvcrouter.viewGET('/', function (ctx) {
   return {
@@ -82,6 +82,8 @@ mvcrouter.jsonDELETE('/rest/:id', async function (ctx) {
 mvcrouter.textGET('/text', function (ctx) {
   return 'aaaaabbbb111xxx';
 });
+
+module.exports = mvcrouter;
 
 ```
 
