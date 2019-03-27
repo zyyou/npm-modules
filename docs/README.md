@@ -21,6 +21,6 @@
 ![npm包license](https://img.shields.io/npm/l/https-sync.svg)
 
 
-## 其他包
- [npmjs.com](https://www.npmjs.com/~zyyou)
+## 安装包
+https://www.npmjs.com/~zyyou
 
