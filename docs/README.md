@@ -20,7 +20,9 @@
 ![npm月下载](https://img.shields.io/npm/dm/https-sync.svg)
 ![npm包license](https://img.shields.io/npm/l/https-sync.svg)
 
-
 ## 安装包
 https://www.npmjs.com/~zyyou
+
+## GitHub
+https://github.com/zyyou/npm-modules
 
