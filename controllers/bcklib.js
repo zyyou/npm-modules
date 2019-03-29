@@ -1,4 +1,5 @@
 'use strict';
+const moment = require('moment');
 const mvcrouter = require('../modules/koa-mvcrouter');
 const bcklib = require('../modules/bcklib');
 
@@ -37,6 +38,18 @@ mvcrouter.jsonGET('/log', function (ctx) {
   bcklib.log.fDebug('ddddddd', 123, { a: 1 }); //文件 debug 日志 
   bcklib.log.fWarn('wwwwwww', 123, { a: 1 }); //文件 warn 日志
   bcklib.log.fError('eeeeeee', 123, { a: 1 }); //文件 error 日志
+
+  return {};
+});
+
+mvcrouter.jsonGET('/cache', async function (ctx) {
+
+
+  let res = await bcklib.cache.set('bcktest', '123123aaaaaa ' + moment().format('YYYY-MM-DD HH:mm:ss'));
+  console.log('set:', res);
+
+  res = await bcklib.cache.get('bcktest');
+  console.log('get:', res);
 
   return {};
 });

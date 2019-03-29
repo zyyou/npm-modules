@@ -31,27 +31,16 @@ exports.retCode = {
  * @returns
  */
 exports.loadConfig = (fileName) => {
-  let cfg = require('./src/config');
+  let cfg = require('./src/config.js');
   return cfg.load(fileName);
 };
 
-exports.log = require('./src/log');
+exports.log = require('./src/log.js');
 
 exports.cutils = require('./src/client_utils.js');
 
+exports.cache = require('./src/cache.js');
 
-/**
- * 获取调用模块名
- *
- * @returns
- */
-function getParentName() {
-  var name = '入口';
-  if (module.parent) {
-    name = module.id.replace(path.resolve(), '');
-  }
-  return name;
-}
 
 
 
