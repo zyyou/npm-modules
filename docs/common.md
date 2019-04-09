@@ -105,3 +105,47 @@ module.exports = {
 ```
 !> 注意：如果环境变量中没有配置config_path，则默认工程目录的config文件夹
 
+## cache
+利用Redis实现的缓存
+
+- 初始化
+
+```javascript
+//在app.js中，options参照：https://github.com/luin/ioredis/blob/master/API.md#new-redisport-host-options
+bcklib.cache.init(options);
+
+//示例：
+bcklib.cache.init({ db: 0, host: 'Redis服务器IP', port: 'Redis端口号', password: '密码' });
+```
+
+- options默认值
+
+```javascript
+opts = opts || {};
+opts.connectTimeout = opts.connectTimeout || 10000;   //初始连接超时毫秒
+opts.stringNumbers = opts.stringNumbers || true;  //强制数字以字符串返回，解决大数字溢出
+opts.maxRetriesPerRequest = opts.maxRetriesPerRequest || 1;   //读写失败重试次数
+opts.enableOfflineQueue = opts.enableOfflineQueue || false;   //禁用离线队列
+//重连策略
+if (!opts.retryStrategy) {
+    opts.retryStrategy = (times) => {
+        if (times > 100) {
+            return null;
+        }
+        let delay = Math.min(times * 1000, 5000);
+        console.warn('缓存服务重试第', times, '次，', delay / 1000, '秒后重试');
+        return delay;
+    }
+}
+```
+
+- 读写缓存
+
+```javascript
+let res = await bcklib.cache.set('bcktest', '123123aaaaaa ' + moment().format('YYYY-MM-DD HH:mm:ss'));
+//成功返回ok
+console.log('set:', res);
+
+res = await bcklib.cache.get('bcktest');
+console.log('get:', res);
+```
