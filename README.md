@@ -24,4 +24,4 @@
 https://www.npmjs.com/~zyyou
 
 # 文档
-https://bcklib.bianchengke.com/
+https://bcklib.js.org/
