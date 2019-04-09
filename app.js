@@ -44,7 +44,7 @@ onerror(app, {
   }
 });
 
-bcklib.cache.init(0, '192.168.70.121', '6379', '123456');
+bcklib.cache.init({ db: 0, host: '192.168.70.121', port: '6379', password: '123456' });
 
 //布局及视图配置
 render(app, {

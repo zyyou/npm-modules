@@ -1,64 +1,69 @@
 'use strict';
 
+const Redis = require("ioredis");
 
-const redis = require("redis");
+let client = null;
 
-const { retMsg } = require("../index.js");
+function redisIsOk() {
+    return client && client.status == 'ready';
+}
 
-var client = null;
+exports.init = async (opts) => {
+    opts = opts || {};
 
-exports.init = async (db, ip, port, pwd) => {
-    let opt = {
-        host: ip,
-        port: port,
-        db: db,
-        password: pwd,
-        socket_keepalive: true,
-        retry_strategy: function (options) {
-            if (options.error && options.error.code === 'ECONNREFUSED') {
-                //console.error('缓存服务连接被拒');
+    opts.connectTimeout = opts.connectTimeout || 10000;   //初始连接超时毫秒
+    opts.stringNumbers = opts.stringNumbers || true;  //强制数字以字符串返回，解决大数字溢出
+    opts.maxRetriesPerRequest = opts.maxRetriesPerRequest || 1;   //读写失败重试次数
+    opts.enableOfflineQueue = opts.enableOfflineQueue || false;   //禁用离线队列
+    //重连策略
+    if (!opts.retryStrategy) {
+        opts.retryStrategy = (times) => {
+            if (times > 100) {
+                return null;
             }
-            if (options.attempt % 10 == 0) {
-                console.error('连接缓存服务重试第', options.attempt, '次 ', options.total_retry_time / 1000, ' 秒');
-            }
-            //console.log('options:', options);
-            //几毫秒后重连
-            return options.attempt > 1000 ? null : 6 * 1000;
+            let delay = Math.min(times * 1000, 5000);
+            console.warn('缓存服务重试第', times, '次，', delay / 1000, '秒后重试');
+            return delay;
         }
-    };
+    }
 
-    client = await redis.createClient(opt);
-    client.getSync = require('util').promisify(client.get).bind(client);
+    client = new Redis(opts);
 
     client.on('error', function (error) {
-        console.error('err', error);
+        console.error('缓存服务异常', error);
     });
     client.on('end', function () {
         console.warn('缓存服务已断开');
     });
-    // client.on("ready", () => {
-    //     console.log("redis ready");
-    // });
-    client.on("connect", () => {
-        console.log("redis connect");
-        // if(client.password){
-        //     client.auth(client.password);
-        // }
+    client.on("ready", () => {
+        console.log("缓存服务准备就绪");
     });
-
-    if (!client.connected) {
-        return retMsg(true, '缓存服务当前不可用', {});
-    }
-
-    return retMsg(false, 'ok');
 };
 
 exports.set = async (key, value) => {
-
-    return await client.set(key, value);
+    let res = 'err';
+    if (!redisIsOk()) {
+        return res;
+    }
+    try {
+        res = await client.set(key, value);
+    } catch (e) {
+        console.error('写入缓存异常', e);
+    }
+    return res;
 };
 
 exports.get = async (key) => {
-    return await client.getSync(key);
+    let res;
+    if (!redisIsOk()) {
+        return res;
+    }
+
+    try {
+        res = await client.get(key);
+    } catch (e) {
+        console.error('读取缓存异常', e);
+    }
+    return res;
 };
 
