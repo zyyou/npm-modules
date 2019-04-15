@@ -19,6 +19,8 @@ exports.load = (fileName) => {
 
     fileName = path.resolve(configPath, fileName);
 
+    console.log(`加载配置文件：${fileName}`);
+
     return require(fileName);
 };
 
