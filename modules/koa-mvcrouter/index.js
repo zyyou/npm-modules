@@ -80,12 +80,8 @@ function buildView(ctx, view, layout) {
 async function viewAction(ctx, action, resHeaders, view, layout) {
     let data = await action(ctx);
     data = data || {};
-
-    if (data.title) {
-        data.title += ' - ' + ctx._appConfig.title;
-    } else {
-        data.title = ctx._appConfig.title;
-    }
+    data.title = data.title || '';
+    data.ctx = data.ctx || ctx;
 
     let viewData = buildView(ctx, view, layout);
     data.layout = viewData.layout;

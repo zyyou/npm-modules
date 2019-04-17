@@ -86,4 +86,11 @@ mvcrouter.textGET('/text', function (ctx) {
 module.exports = mvcrouter;
 
 ```
-
+## 视图数据
+默认会添加ctx到视图，网站配置信息如公共title、备案号等可以写入到ctx
+```javascript
+let data = await action(ctx);
+data = data || {};
+data.title = data.title || '';
+data.ctx = data.ctx || ctx;
+```

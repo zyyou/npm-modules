@@ -1,16 +1,16 @@
 'use strict';
 
 const httpSync = require('https-sync');
+const bcklib = require('bcklib');
 
 const mvcrouter = require('../modules/koa-mvcrouter');
 
 mvcrouter.viewGET('/', function (ctx) {
   console.log('----- test/被执行 ------');
-  var msg = require('../lib/message');
-  var res = msg.build(false,'',{}, msg.code.ok);
+  var res = bcklib.retMsg(false,'',{}, bcklib.retCode.ok);
 
   return {
-    //title: 'test / controller',
+    title: 'test / controller',
     content: JSON.stringify(res)
   };
 });
