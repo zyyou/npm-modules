@@ -53,4 +53,22 @@ mvcrouter.jsonGET('/cache', async function (ctx) {
   return {};
 });
 
+mvcrouter.textGET('/utils', async function (ctx) {
+
+  let res = '---';
+
+  res += '\r\n' + bcklib.sutils.notNullStr('abc');
+  res += '\r\n' + bcklib.sutils.notNullStr(undefined);
+  res += '\r\n' + bcklib.sutils.notNullStr(new Date());
+  res += '\r\n' + bcklib.sutils.notNullStr(null);
+  res += '\r\n' + bcklib.sutils.notNullStr(1.0);
+  res += '\r\n' + bcklib.sutils.notNullStr(true);
+  res += '\r\n' + bcklib.sutils.notNullStr([]);
+  res += '\r\n' + bcklib.sutils.notNullStr(function(){});
+  res += '\r\n' + bcklib.sutils.notNullStr({});
+  res += '\r\n-----';
+
+  return res;
+});
+
 module.exports = mvcrouter;
