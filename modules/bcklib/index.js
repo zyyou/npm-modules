@@ -11,7 +11,7 @@
 exports.retMsg = (hasErr, msg, data, code) => {
   hasErr = hasErr ? true : false;
   msg = msg || '未知';
-  data = data || {};
+  //data = data || {};
   code = code || -1;
   return { hasErr: hasErr, message: msg, data: data, code: code };
 };
