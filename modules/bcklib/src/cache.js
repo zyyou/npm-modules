@@ -41,10 +41,16 @@ exports.init = async (opts) => {
 };
 
 exports.set = async (key, value) => {
+
+    if('string' != typeof key || key === ''){
+        return 'err';
+    }
+
     let res = 'err';
     if (!redisIsOk()) {
         return res;
     }
+
     try {
         res = await client.set(key, value);
     } catch (e) {
@@ -54,6 +60,10 @@ exports.set = async (key, value) => {
 };
 
 exports.get = async (key) => {
+    if('string' != typeof key || key === ''){
+        return '';
+    }
+
     let res;
     if (!redisIsOk()) {
         return res;
