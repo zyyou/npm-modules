@@ -6,7 +6,7 @@ const bcklib = require('../modules/bcklib');
 //index controller中建议只写此action
 mvcrouter.jsonGET('/retmsg', function (ctx) {
 
-  var retMsg = bcklib.retMsg(true, 'err', {}, bcklib.retCode.paramErr);
+  var retMsg = bcklib.retMsg(true, 'err', '', bcklib.retCode.paramErr);
 
   return retMsg;
 });

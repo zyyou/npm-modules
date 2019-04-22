@@ -27,7 +27,7 @@ bcklib.retMsg()
     </tr>
     <tr>
         <td>data</td>
-        <td>json</td>
+        <td>*</td>
         <td>响应数据</td>
     </tr>
     <tr>
