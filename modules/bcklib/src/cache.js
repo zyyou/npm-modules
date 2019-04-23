@@ -126,18 +126,18 @@ exports.set = async (key, value) => {
 exports.get = async (key) => {
     key = stringUtils.notNullStr(key);
 
-    let res = undefined;
     let cli = getReadClient();
     if (cli == null) {
-        return res;
+        console.warn('缓存服务不可用，本次请求返回\'\'，key=', key);
+        return '';
     }
 
     try {
-        res = stringUtils.notNullStr(await cli.get(key));
+        return stringUtils.notNullStr(await cli.get(key));
     } catch (e) {
-        console.error('读取缓存异常', e);
+        console.error('读取缓存异常，本次请求返回\'\'，key=', key, 'e=', e);
+        return '';
     }
-    return res;
 };
 
 /**
