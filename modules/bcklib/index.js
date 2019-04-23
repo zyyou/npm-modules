@@ -24,27 +24,26 @@ exports.retCode = {
   paramErr: 1001
 };
 
+
+exports.log = require('./src/log');
+
+exports.cutils = require('./src/client_utils');
+exports.valueUtils = require('./src/value_utils');
+
+exports.cache = require('./src/cache');
+
+exports.config = require('./src/config');
+
+//------------ 以下为过期
+exports.sutils = this.valueUtils;
+
 /**
  * 加载配置文件
  *
- * @param {String} fileName 配置文件名
+ * @param {String} fileName 配置文件名|默认在/_config目录下，环境变量优先：process.env.config_path
  * @returns
  */
-exports.loadConfig = (fileName) => {
-  let cfg = require('./src/config.js');
-  return cfg.load(fileName);
-};
-
-exports.log = require('./src/log.js');
-
-exports.cutils = require('./src/client_utils.js');
-exports.valueUtils = require('./src/value_utils.js');
-
-exports.cache = require('./src/cache.js');
-
-//过期
-exports.sutils = this.valueUtils;
-
+exports.loadConfig = this.config.load;
 
 
 

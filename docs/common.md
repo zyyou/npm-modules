@@ -53,11 +53,11 @@ bcklib.retMsg()
 }
 ```
 
-## loadConfig
-根据环境变量加载配置文件，可应用于开发生产配置分离以及自动化部署等场景
+## config
+通过环境变量指定配置文件目录（变量名：process.env.config_path），环境变量未配置时默认工程根目录下的/config，可应用于开发生产配置分离以及自动化部署等场景
 - 函数调用
 ```javascript
-bcklib.loadConfig()
+bcklib.config.load()
 ```
 
 - 入参
@@ -70,7 +70,12 @@ bcklib.loadConfig()
     <tr>
         <td>fileName</td>
         <td>string</td>
-        <td>配置文件文件名，注意不需要目录，默认值：appconfig.js</td>
+        <td>配置文件文件名，默认值：appconfig.js</td>
+    </tr>
+    <tr>
+        <td>isCommon</td>
+        <td>boolean</td>
+        <td>是否公共配置，为true时通过环境变量指定的目录读取配置，变量名：process.env.config_path_common</td>
     </tr>
 </table>
 
@@ -87,11 +92,12 @@ bcklib.loadConfig()
 ```javascript
 env: {
       NODE_ENV: 'production',
-      config_path:'/Users/zyy/config' //支持 ./ 或 / ，分别表示当前工程根目录和系统根目录
+      config_path:'/Users/zyy/config', //支持 ./ 或 / ，分别表示当前工程根目录和系统根目录
+      config_path_common:'/Users/zyy/config'
     },
 env_development: {
       NODE_ENV: 'development',
-      config_path:'./config'
+      config_path_common:'/Users/zyy/config'
     },
 ```
 

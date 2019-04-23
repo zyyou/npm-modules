@@ -19,12 +19,13 @@ mvcrouter.jsonGET('/cip', function (ctx) {
 });
 
 mvcrouter.jsonGET('/config', function (ctx) {
+  let config;
 
-  var config = bcklib.loadConfig();
-
+  config = bcklib.config.load();
   console.log('config:', config);
 
-  //config = bcklib.loadConfig('logconf.json');
+  config = bcklib.config.load('common.js', true);
+  console.log('config:', config);
 
   return config;
 });

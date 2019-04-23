@@ -7,7 +7,7 @@ module.exports = {
     //指定要注入的环境变量
     env: {
       NODE_ENV: 'development',
-      config_path:'./config'
+      config_path_common:'/Users/zyy/config'
     },
     //应用入口
     script: 'bin/www',
@@ -35,7 +35,8 @@ module.exports = {
     //指定要注入的环境变量
     env: {
       NODE_ENV: 'production',
-      config_path:'/Users/zyy/config'
+      config_path:'/Users/zyy/config',
+      config_path_common:'/Users/zyy/config'
     },
     //应用入口
     script: 'bin/www',
@@ -48,9 +49,9 @@ module.exports = {
     //禁用所有日志存储
     disable_logs: false,
     //设置执行模式，可能的值为：fork|cluster
-    exec_mode: 'cluster',
+    exec_mode: 'fork',
     //在群集模式下启动的实例数, 数字 或 max=按CPU核数启动
-    instances: 2,
+    instances: 1,
     //在群集模式下，将每种类型的日志合并到一个文件中（而不是每个群集都单独一个）
     merge_logs: true,
     //进程失败后自重启
