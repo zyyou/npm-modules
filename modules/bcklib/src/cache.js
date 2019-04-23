@@ -3,13 +3,26 @@
 const Redis = require("ioredis");
 const stringUtils = require("./string_utils");
 
+//读写
 let client = null;
 
-function redisIsOk() {
+//只读
+let clientRead = null;
+
+/**
+ * 检查服务是否可用
+ *
+ * @param {Boolean} isRead 检查只读库
+ * @returns
+ */
+function redisIsOk(isRead) {
+    if (isRead) {
+        return clientRead && clientRead.status == 'ready';
+    }
     return client && client.status == 'ready';
 }
 
-exports.init = async (opts) => {
+function buildOpts(opts) {
     opts = opts || {};
 
     opts.connectTimeout = opts.connectTimeout || 10000;   //初始连接超时毫秒
@@ -27,24 +40,48 @@ exports.init = async (opts) => {
             return delay;
         }
     }
+    return opts;
+}
 
+/**
+ * 初始化
+ *
+ * @param {JSON} opts 读写库配置
+ * @param {JSON} readOpts 只读库配置，不为空时所有读取使用该配置
+ */
+exports.init = async (opts, readOpts) => {
+    opts = buildOpts(opts);
     client = new Redis(opts);
-
     client.on('error', function (error) {
-        console.error('缓存服务异常', error);
+        console.error('缓存服务[读写库]异常', error);
     });
     client.on('end', function () {
-        console.warn('缓存服务已断开');
+        console.warn('缓存服务[读写库]已断开');
     });
     client.on("ready", () => {
-        console.log("缓存服务准备就绪");
+        console.log("缓存服务[读写库]准备就绪");
     });
+
+    //初始化只读库
+    if (readOpts) {
+        readOpts = buildOpts(readOpts);
+        clientRead = new Redis(readOpts);
+        clientRead.on('error', function (error) {
+            console.error('缓存服务[只读库]异常', error);
+        });
+        clientRead.on('end', function () {
+            console.warn('缓存服务[只读库]已断开');
+        });
+        clientRead.on("ready", () => {
+            console.log("缓存服务[只读库]准备就绪");
+        });
+    }
 };
 
 /**
  * 写缓存
  *
- * @param {string} key，将自动转换成string类型
+ * @param {String} key，将自动转换成string类型
  * @param {*} value 值，将自动转换成string类型
  * @returns
  */
@@ -65,16 +102,27 @@ exports.set = async (key, value) => {
     return res;
 };
 
+/**
+ * 读缓存
+ *
+ * @param {String} key
+ * @returns
+ */
 exports.get = async (key) => {
     key = stringUtils.notNullStr(key);
 
     let res;
-    if (!redisIsOk()) {
+    let cli = null;
+    if (redisIsOk(true)) {
+        cli = clientRead;
+    } else if (redisIsOk()) {
+        cli = client;
+    } else {
         return res;
     }
 
     try {
-        res = stringUtils.notNullStr(await client.get(key));
+        res = stringUtils.notNullStr(await cli.get(key));
     } catch (e) {
         console.error('读取缓存异常', e);
     }

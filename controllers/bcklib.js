@@ -44,10 +44,10 @@ mvcrouter.jsonGET('/log', function (ctx) {
 
 mvcrouter.jsonGET('/cache', async function (ctx) {
 
-  // let res = await bcklib.cache.set('bcktest', '123123aaaaaa ' + moment().format('YYYY-MM-DD HH:mm:ss'));
-  // console.log('set:', res);
+  let res = await bcklib.cache.set('bcktest', '123123aaaaaa ' + moment().format('YYYY-MM-DD HH:mm:ss'));
+  console.log('set:', res);
 
-  let res = await bcklib.cache.get('bcktest');
+  res = await bcklib.cache.get('bcktest');
   console.log('get:', res);
 
   return {};
@@ -64,7 +64,7 @@ mvcrouter.textGET('/utils', async function (ctx) {
   res += '\r\n' + bcklib.sutils.notNullStr(1.0);
   res += '\r\n' + bcklib.sutils.notNullStr(true);
   res += '\r\n' + bcklib.sutils.notNullStr([]);
-  res += '\r\n' + bcklib.sutils.notNullStr(function(){});
+  res += '\r\n' + bcklib.sutils.notNullStr(function () { });
   res += '\r\n' + bcklib.sutils.notNullStr({});
   res += '\r\n-----';
 

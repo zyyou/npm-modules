@@ -112,9 +112,9 @@ module.exports = {
 
 ```javascript
 //在app.js中，options参照：https://github.com/luin/ioredis/blob/master/API.md#new-redisport-host-options
-bcklib.cache.init(options);
+bcklib.cache.init(options, readonlyOptions);
 
-//示例：
+//示例(readonlyOptions可为空，为空时不启用读写分离)：
 bcklib.cache.init({ db: 0, host: 'Redis服务器IP', port: 'Redis端口号', password: '密码' });
 ```
 
