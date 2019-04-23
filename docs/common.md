@@ -142,10 +142,15 @@ if (!opts.retryStrategy) {
 - 读写缓存
 
 ```javascript
-let res = await bcklib.cache.set('bcktest', '123123aaaaaa ' + moment().format('YYYY-MM-DD HH:mm:ss'));
-//成功返回ok
-console.log('set:', res);
+  let res;
+  //是否存在key，存在返回1，不存在0
+  res = await bcklib.cache.exists('bcktest');
+  console.log('exists:', res);
+  //设置成功返回OK
+  res = await bcklib.cache.set('bcktest', '123123aaaaaa ' + moment().format('YYYY-MM-DD HH:mm:ss'));
+  console.log('set:', res);
+  //返回值字符串
+  res = await bcklib.cache.get('bcktest');
+  console.log('get:', res);
 
-res = await bcklib.cache.get('bcktest');
-console.log('get:', res);
 ```

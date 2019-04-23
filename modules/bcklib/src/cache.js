@@ -22,6 +22,21 @@ function redisIsOk(isRead) {
     return client && client.status == 'ready';
 }
 
+/**
+ * 优先返回只读库，都不可用返回null
+ *
+ * @returns
+ */
+function getReadClient() {
+    if (redisIsOk(true)) {
+        return clientRead;
+    } else if (redisIsOk()) {
+        return client;
+    } else {
+        return null;
+    }
+}
+
 function buildOpts(opts) {
     opts = opts || {};
 
@@ -112,17 +127,36 @@ exports.get = async (key) => {
     key = stringUtils.notNullStr(key);
 
     let res;
-    let cli = null;
-    if (redisIsOk(true)) {
-        cli = clientRead;
-    } else if (redisIsOk()) {
-        cli = client;
-    } else {
+    let cli = getReadClient();
+    if (cli == null) {
         return res;
     }
 
     try {
         res = stringUtils.notNullStr(await cli.get(key));
+    } catch (e) {
+        console.error('读取缓存异常', e);
+    }
+    return res;
+};
+
+/**
+ * 是否存在key，存在返回1，不存在返回0
+ *
+ * @param {String} key
+ * @returns
+ */
+exports.exists = async (key) => {
+    key = stringUtils.notNullStr(key);
+
+    let res;
+    let cli = getReadClient();
+    if (cli == null) {
+        return res;
+    }
+
+    try {
+        res = stringUtils.notNullStr(await cli.exists(key));
     } catch (e) {
         console.error('读取缓存异常', e);
     }
