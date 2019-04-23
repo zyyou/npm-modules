@@ -44,10 +44,10 @@ mvcrouter.jsonGET('/log', function (ctx) {
 
 mvcrouter.jsonGET('/cache', async function (ctx) {
 
-  let res = await bcklib.cache.set('bcktest', '123123aaaaaa ' + moment().format('YYYY-MM-DD HH:mm:ss'));
-  console.log('set:', res);
+  // let res = await bcklib.cache.set('bcktest', '123123aaaaaa ' + moment().format('YYYY-MM-DD HH:mm:ss'));
+  // console.log('set:', res);
 
-  res = await bcklib.cache.get('bcktest');
+  let res = await bcklib.cache.get('bcktest');
   console.log('get:', res);
 
   return {};

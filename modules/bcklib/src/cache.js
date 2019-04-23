@@ -1,6 +1,7 @@
 'use strict';
 
 const Redis = require("ioredis");
+const stringUtils = require("./string_utils");
 
 let client = null;
 
@@ -40,11 +41,16 @@ exports.init = async (opts) => {
     });
 };
 
+/**
+ * 写缓存
+ *
+ * @param {string} key，将自动转换成string类型
+ * @param {*} value 值，将自动转换成string类型
+ * @returns
+ */
 exports.set = async (key, value) => {
-
-    if('string' != typeof key || key === ''){
-        return 'err';
-    }
+    key = stringUtils.notNullStr(key);
+    value = stringUtils.notNullStr(value);
 
     let res = 'err';
     if (!redisIsOk()) {
@@ -60,9 +66,7 @@ exports.set = async (key, value) => {
 };
 
 exports.get = async (key) => {
-    if('string' != typeof key || key === ''){
-        return '';
-    }
+    key = stringUtils.notNullStr(key);
 
     let res;
     if (!redisIsOk()) {
@@ -70,7 +74,7 @@ exports.get = async (key) => {
     }
 
     try {
-        res = await client.get(key);
+        res = stringUtils.notNullStr(await client.get(key));
     } catch (e) {
         console.error('读取缓存异常', e);
     }

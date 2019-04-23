@@ -13,6 +13,7 @@ const escapeHtml = require('escape-html');
 
 const bcklib = require('./modules/bcklib');
 const mvcrouter = require('./modules/koa-mvcrouter');
+const appConfig = bcklib.loadConfig();
 
 bcklib.log.init(bcklib.loadConfig('logconf.js'))
 
@@ -44,7 +45,7 @@ onerror(app, {
   }
 });
 
-bcklib.cache.init({ db: 0, host: '192.168.70.121', port: '6379', password: '123456', keyPrefix:'npm_modules.' });
+bcklib.cache.init(appConfig.redis);
 
 //布局及视图配置
 render(app, {
@@ -56,7 +57,7 @@ render(app, {
 });
 
 app.use(async (ctx, next) => {
-  ctx._appConfig = bcklib.loadConfig();
+  ctx._appConfig = appConfig;
   await next();
 });
 
