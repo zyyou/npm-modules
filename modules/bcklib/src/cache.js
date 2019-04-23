@@ -37,7 +37,7 @@ function getReadClient() {
     }
 }
 
-function buildOpts(opts) {
+function buildOpts(opts, name) {
     opts = opts || {};
 
     opts.connectTimeout = opts.connectTimeout || 10000;   //初始连接超时毫秒
@@ -51,7 +51,7 @@ function buildOpts(opts) {
                 return null;
             }
             let delay = Math.min(times * 1000, 5000);
-            console.warn('缓存服务重试第', times, '次，', delay / 1000, '秒后重试');
+            console.warn(name, '缓存服务重试第', times, '次，', delay / 1000, '秒后重试');
             return delay;
         }
     }
@@ -65,30 +65,30 @@ function buildOpts(opts) {
  * @param {JSON} readOpts 只读库配置，不为空时所有读取使用该配置
  */
 exports.init = async (opts, readOpts) => {
-    opts = buildOpts(opts);
+    opts = buildOpts(opts, '读写');
     client = new Redis(opts);
     client.on('error', function (error) {
-        console.error('缓存服务[读写库]异常', error);
+        console.error('缓存服务[读写]异常', error);
     });
     client.on('end', function () {
-        console.warn('缓存服务[读写库]已断开');
+        console.warn('缓存服务[读写]已断开');
     });
     client.on("ready", () => {
-        console.log("缓存服务[读写库]准备就绪");
+        console.log("缓存服务[读写]准备就绪");
     });
 
     //初始化只读库
     if (readOpts) {
-        readOpts = buildOpts(readOpts);
+        readOpts = buildOpts(readOpts, '只读');
         clientRead = new Redis(readOpts);
         clientRead.on('error', function (error) {
-            console.error('缓存服务[只读库]异常', error);
+            console.error('缓存服务[只读]异常', error);
         });
         clientRead.on('end', function () {
-            console.warn('缓存服务[只读库]已断开');
+            console.warn('缓存服务[只读]已断开');
         });
         clientRead.on("ready", () => {
-            console.log("缓存服务[只读库]准备就绪");
+            console.log("缓存服务[只读]准备就绪");
         });
     }
 };
@@ -104,7 +104,7 @@ exports.set = async (key, value) => {
     key = stringUtils.notNullStr(key);
     value = stringUtils.notNullStr(value);
 
-    let res = 'err';
+    let res = undefined;
     if (!redisIsOk()) {
         return res;
     }
@@ -126,7 +126,7 @@ exports.set = async (key, value) => {
 exports.get = async (key) => {
     key = stringUtils.notNullStr(key);
 
-    let res;
+    let res = undefined;
     let cli = getReadClient();
     if (cli == null) {
         return res;
@@ -149,7 +149,7 @@ exports.get = async (key) => {
 exports.exists = async (key) => {
     key = stringUtils.notNullStr(key);
 
-    let res;
+    let res = undefined;
     let cli = getReadClient();
     if (cli == null) {
         return res;
