@@ -38,9 +38,12 @@ exports.loadConfig = (fileName) => {
 exports.log = require('./src/log.js');
 
 exports.cutils = require('./src/client_utils.js');
-exports.sutils = require('./src/string_utils.js');
+exports.valueUtils = require('./src/value_utils.js');
 
 exports.cache = require('./src/cache.js');
+
+//过期
+exports.sutils = this.valueUtils;
 
 
 

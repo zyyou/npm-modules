@@ -46,14 +46,22 @@ mvcrouter.jsonGET('/cache', async function (ctx) {
 
   let res;
 
+  //是否存在key，存在返回1，不存在0
   res = await bcklib.cache.exists('bcktest');
   console.log('exists:', res);
-  
-  res = await bcklib.cache.set('bcktest', '123123aaaaaa ' + moment().format('YYYY-MM-DD HH:mm:ss'));
+  //设置成功返回OK
+  //res = await bcklib.cache.set('bcktest', '123123aaaaaa ' + moment().format('YYYY-MM-DD HH:mm:ss'));
+  res = await bcklib.cache.set('bcktest', '123123aaaaaa ' + moment().format('YYYY-MM-DD HH:mm:ss'), 20);
   console.log('set:', res);
-
+  //返回值字符串
   res = await bcklib.cache.get('bcktest');
   console.log('get:', res);
+  //计数
+  res = await bcklib.cache.incr('testincr');
+  console.log('incr:', res);
+  //返回计数值
+  res = await bcklib.cache.get('testincr');
+  console.log('get incr:', res);
 
   return {};
 });

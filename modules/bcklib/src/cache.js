@@ -1,7 +1,7 @@
 'use strict';
 
 const Redis = require("ioredis");
-const stringUtils = require("./string_utils");
+const valueUtils = require("./value_utils");
 
 //读写
 let client = null;
@@ -98,11 +98,13 @@ exports.init = async (opts, readOpts) => {
  *
  * @param {String} key，将自动转换成string类型
  * @param {*} value 值，将自动转换成string类型
+ * @param {Number} second 有效期秒数，非数字或小于1不限制
  * @returns
  */
-exports.set = async (key, value) => {
-    key = stringUtils.notNullStr(key);
-    value = stringUtils.notNullStr(value);
+exports.set = async (key, value, second) => {
+    key = valueUtils.notNullStr(key);
+    value = valueUtils.notNullStr(value);
+    second = parseInt(second);
 
     let res = undefined;
     if (!redisIsOk()) {
@@ -110,7 +112,11 @@ exports.set = async (key, value) => {
     }
 
     try {
-        res = await client.set(key, value);
+        if (isNaN(second) || second < 1) {
+            res = await client.set(key, value);
+        } else {
+            res = await client.setex(key, second, value);
+        }
     } catch (e) {
         console.error('写入缓存异常', e);
     }
@@ -124,7 +130,7 @@ exports.set = async (key, value) => {
  * @returns
  */
 exports.get = async (key) => {
-    key = stringUtils.notNullStr(key);
+    key = valueUtils.notNullStr(key);
 
     let cli = getReadClient();
     if (cli == null) {
@@ -133,11 +139,33 @@ exports.get = async (key) => {
     }
 
     try {
-        return stringUtils.notNullStr(await cli.get(key));
+        return valueUtils.notNullStr(await cli.get(key));
     } catch (e) {
         console.error('读取缓存异常，本次请求返回\'\'，key=', key, 'e=', e);
         return '';
     }
+};
+
+/**
+ * 自增计数，不存在则创建+1，存在时值必须为数字
+ *
+ * @param {String} key
+ * @returns
+ */
+exports.incr = async (key) => {
+    key = valueUtils.notNullStr(key);
+
+    let res = undefined;
+    if (!redisIsOk()) {
+        return res;
+    }
+
+    try {
+        res = await client.incr(key);
+    } catch (e) {
+        console.error('写入缓存异常', e);
+    }
+    return res;
 };
 
 /**
@@ -147,7 +175,7 @@ exports.get = async (key) => {
  * @returns
  */
 exports.exists = async (key) => {
-    key = stringUtils.notNullStr(key);
+    key = valueUtils.notNullStr(key);
 
     let res = undefined;
     let cli = getReadClient();
@@ -156,7 +184,7 @@ exports.exists = async (key) => {
     }
 
     try {
-        res = stringUtils.notNullStr(await cli.exists(key));
+        res = valueUtils.notNullStr(await cli.exists(key));
     } catch (e) {
         console.error('读取缓存异常', e);
     }
