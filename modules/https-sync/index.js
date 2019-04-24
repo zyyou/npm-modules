@@ -14,7 +14,7 @@ const bcklib = require('bcklib');
  */
 function request (opts, data) {
   opts.headers = opts.headers || {};
-  opts.headers.httpsync = true;
+  //opts.headers.httpsync = true;
   opts.timeout = opts.timeout || 10 * 1000;
 
   if (data) {
