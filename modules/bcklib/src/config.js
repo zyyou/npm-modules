@@ -25,9 +25,6 @@ exports.load = (fileName, isCommon) => {
         configPath = os.homedir() + configPath.substring(1);
     }
 
-    console.log('env', process.env.npm_package_name);
-    console.log('fn:', fileName, 'cp', configPath);
-
     fileName = path.resolve(configPath, fileName);
 
     console.log(`加载配置文件 isCommon=${isCommon}`, fileName);
