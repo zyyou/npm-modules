@@ -70,7 +70,7 @@ bcklib.config.load()
     <tr>
         <td>fileName</td>
         <td>string</td>
-        <td>配置文件文件名，默认值：process.env.config_name || process.env.npm_package_name + '.js' || 'appconfig.js'</td>
+        <td>配置文件文件名，默认值：process.env.app_config || process.env.npm_package_name + '.js' || 'appconfig.js'</td>
     </tr>
     <tr>
         <td>isCommon</td>
