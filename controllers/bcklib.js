@@ -25,7 +25,7 @@ mvcrouter.jsonGET('/config', function (ctx) {
   console.log('config:', config);
 
   config = bcklib.config.load('common.js', true);
-  console.log('config:', config);
+  console.log('common:', config);
 
   return config;
 });

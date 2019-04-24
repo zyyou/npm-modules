@@ -4,6 +4,7 @@
         "routes.js",
         "config/*.*",
         "controllers",
+        "config",
         "models",
         "middlewares",
         "modules",

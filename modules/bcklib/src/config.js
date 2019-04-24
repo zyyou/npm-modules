@@ -17,6 +17,9 @@ exports.load = (fileName, isCommon) => {
     let configPath = isCommon ? process.env.config_path_common : process.env.config_path;
     if (valueUtils.notNullStr(configPath).length == 0) {
         configPath = 'config';
+        if (isCommon) {
+            configPath = path.join(configPath, 'common');
+        }
     }
 
     fileName = path.resolve(configPath, fileName);
