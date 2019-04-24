@@ -1,6 +1,6 @@
 {
   "name": "bcklib",
-  "version": "1.5.5",
+  "version": "1.5.6",
   "dependencies": {
   },
   "description": "nodejs 常用开发库",
