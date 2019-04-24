@@ -13,9 +13,9 @@ const escapeHtml = require('escape-html');
 
 const bcklib = require('./modules/bcklib');
 const mvcrouter = require('./modules/koa-mvcrouter');
-const appConfig = bcklib.loadConfig();
+const appConfig = bcklib.config.load();
 
-bcklib.log.init(bcklib.loadConfig('logconf.js'))
+bcklib.log.init(bcklib.config.load('logconf.js'))
 
 // 全局异常捕获
 app.on('error', (err, ctx) => {

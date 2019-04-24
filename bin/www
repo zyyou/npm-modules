@@ -8,7 +8,7 @@ var app = require('../app');
 var debug = require('debug')('demo:server');
 var http = require('http');
 const bcklib = require('../modules/bcklib');
-var appInfo = bcklib.loadConfig();
+var appInfo = bcklib.config.load();
 
 /**
  * Get port from environment and store in Express.
