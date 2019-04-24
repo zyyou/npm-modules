@@ -7,7 +7,8 @@ module.exports = {
     //指定要注入的环境变量
     env: {
       NODE_ENV: 'development',
-      config_path_common:'/Users/zyy/config'
+      //config_path_common:'/Users/zyy/config'
+      config_path_common:'~/config'
     },
     //应用入口
     script: 'bin/www',

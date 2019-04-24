@@ -1,5 +1,6 @@
 'use strict';
 const path = require('path');
+const os = require('os');
 const valueUtils = require('./value_utils');
 
 /**
@@ -13,13 +14,15 @@ exports.load = (fileName, isCommon) => {
     if (!fileName || fileName.length == 0) {
         fileName = 'appconfig.js';
     }
-
+    
     let configPath = isCommon ? process.env.config_path_common : process.env.config_path;
     if (valueUtils.notNullStr(configPath).length == 0) {
         configPath = 'config';
         if (isCommon) {
             configPath = path.join(configPath, 'common');
         }
+    }else if(configPath.startsWith('~')){
+        configPath = os.homedir() + configPath.substring(1);
     }
 
     fileName = path.resolve(configPath, fileName);
