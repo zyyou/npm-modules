@@ -7,6 +7,7 @@ module.exports = {
     //指定要注入的环境变量
     env: {
       NODE_ENV: 'development',
+      config_name: 'npmmodules.js',
       config_path_common:'~/config'
     },
     //应用入口
@@ -38,6 +39,7 @@ module.exports = {
     env: {
       NODE_ENV: 'production',
       config_path:'~/config',
+      config_name: 'npmmodules.js',
       config_path_common:'~/config'
     },
     //应用入口
