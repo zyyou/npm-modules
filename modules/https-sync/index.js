@@ -12,7 +12,7 @@ const bcklib = require('bcklib');
  * @param {JSON} data
  * @returns
  */
-function request (opts, data) {
+function request(opts, data) {
   opts.headers = opts.headers || {};
   //opts.headers.httpsync = true;
   opts.timeout = opts.timeout || 10 * 1000;
@@ -26,6 +26,9 @@ function request (opts, data) {
   let http = opts.protocol == 'https:' ? require('https') : require('http');
   return new Promise((resolve, reject) => {
     let req = http.request(opts, (res) => {
+      if (res.statusCode != 200) {
+        reject(bcklib.retMsg(true, '请求异常 ' + res.statusMessage, {}, res.statusCode));
+      }
       let resData = '', resStr = '';
       res.on('data', (dt) => {
         resStr += dt;
