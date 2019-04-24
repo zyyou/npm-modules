@@ -27,7 +27,7 @@ function request(opts, data) {
   return new Promise((resolve, reject) => {
     let req = http.request(opts, (res) => {
       if (res.statusCode != 200) {
-        reject(bcklib.retMsg(true, '请求异常 ' + res.statusMessage, {}, res.statusCode));
+        resolve(bcklib.retMsg(true, '请求异常 ' + res.statusMessage, {}, res.statusCode));
       }
       let resData = '', resStr = '';
       res.on('data', (dt) => {
@@ -43,7 +43,7 @@ function request(opts, data) {
     });
     req.on(('error'), (e) => {
       debug('请求异常 %s %j %j', e.message, opts, e);
-      reject(bcklib.retMsg(true, '请求异常 ' + e.message, {}, bcklib.retCode.sysErr));
+      resolve(bcklib.retMsg(true, '请求异常 ' + e.message, {}, bcklib.retCode.sysErr));
     });
     if (data) {
       req.write(data);
