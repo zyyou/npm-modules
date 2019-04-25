@@ -15,6 +15,17 @@ mvcrouter.viewGET('/', function (ctx) {
   };
 });
 
+
+mvcrouter.viewGET('/AbC', function (ctx) {
+  console.log('----- test/被执行 ------');
+  var res = bcklib.retMsg(false,'',{}, bcklib.retCode.ok);
+
+  return {
+    title: 'test / controller',
+    content: JSON.stringify(res)
+  };
+});
+
 //指定布局页
 mvcrouter.viewGET('/uv', function (ctx) {
   return {

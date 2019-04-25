@@ -12,7 +12,10 @@ const valueUtils = require('./value_utils');
  */
 exports.load = (fileName, isCommon) => {
     if (!fileName || fileName.length == 0) {
-        fileName = process.env.app_config || process.env.npm_package_name + '.js' || 'appconfig.js';
+        fileName = process.env.app_config || valueUtils.notNullStr(process.env.npm_package_name) + '.js';
+        if (fileName == '.js') {
+            fileName = 'appconfig.js';
+        }
     }
 
     let configPath = isCommon ? process.env.config_path_common : process.env.config_path;
