@@ -1,0 +1,26 @@
+{
+  "name": "pm2-moniter",
+  "version": "1.0.0",
+  "description": "PM2 监控",
+  "main": "app.js",
+  "dependencies": {
+    "pmx": "beta"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zyyou"
+  },
+  "config": {
+    "conf_var_1": true,
+    "conf_var_2": "myvalue"
+  },
+  "apps": [
+    {
+      "merge_logs": true,
+      "max_memory_restart": "200M",
+      "script": "app.js"
+    }
+  ],
+  "author": "zyy",
+  "license": "MIT"
+}

@@ -30,6 +30,7 @@
     "koa-views": "^5.2.1",
     "log4js": "^3.0.6",
     "moment": "^2.24.0",
+    "pm2-dingtalk": "^1.1.1",
     "redis": "^2.8.0"
   },
   "devDependencies": {
