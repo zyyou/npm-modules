@@ -14,7 +14,8 @@ var moduelName = conf.module_name;
 // Start listening on the PM2 BUS
 pm2.launchBus(function (err, bus) {
 
-  console.log('launchBus', err, bus);
+  //console.log('launchBus', err, bus);
+  return;
 
   // Listen for process logs
   //if (conf.log) {

@@ -11,8 +11,8 @@
     "url": "https://github.com/zyyou"
   },
   "config": {
-    "conf_var_1": true,
-    "conf_var_2": "myvalue"
+    "zyytest": 123,
+    "zyyval": "aaabbb"
   },
   "apps": [
     {

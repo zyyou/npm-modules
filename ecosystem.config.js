@@ -19,6 +19,7 @@ module.exports = {
     output: '~/logs/npmmodules_out.log',
     //stderr的文件路径（每行都附加到此文件中）,不记录设置 /dev/null
     error: '~/logs/npmmodules_out.err',
+    log_date_format: "YYMMDD-HHmmss",
     //禁用所有日志存储
     disable_logs: false,
     //设置执行模式，可能的值为：fork|cluster
@@ -51,6 +52,7 @@ module.exports = {
     output: '~/logs/npmmodules_out.log',
     //stderr的文件路径（每行都附加到此文件中）,不记录设置 /dev/null
     error: '~/logs/npmmodules_out.err',
+    log_date_format: "YYMMDD(HH:mm:ss)",
     //禁用所有日志存储
     disable_logs: false,
     //设置执行模式，可能的值为：fork|cluster
