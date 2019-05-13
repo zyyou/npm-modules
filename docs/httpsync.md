@@ -15,5 +15,10 @@ const httpSync = require('https-sync');
 
 ## 调用
 ```javascript
-let res = await httpSync.get(url);
+//timeout默认10秒
+let res = await httpSync.get(url,timeout);
+res = await httpSync.postJSON(url, data, reqHeaders, timeout);
+res = await httpSync.putJSON(url, data, reqHeaders, timeout);
+res = await httpSync.deleteJSON(url, data, reqHeaders, timeout);
+res = await httpSync.request(opts, data);
 ```

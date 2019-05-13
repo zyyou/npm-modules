@@ -53,14 +53,27 @@ function request(opts, data) {
 }
 
 /**
+ * 发起请求，自识别http或https
+ *
+ * @param {URL} opts URL对象.
+ * @param {JSON} data
+ * @returns
+ */
+exports.request = function (opts, data) {
+  return request(opts, data);
+}
+
+/**
  * 发送GET请求
  *
  * @param {String} url
  * @param {JSON} reqHeaders 请求头信息
+ * @param {Number} timeout 超时毫秒
  * @returns
  */
-exports.get = function (url, reqHeaders) {
+exports.get = function (url, reqHeaders, timeout) {
   let opts = nurl.parse(url);
+  opts.timeout = timeout;
   opts.method = 'GET';
   opts.headers = reqHeaders || {};
   return request(opts);
@@ -72,10 +85,12 @@ exports.get = function (url, reqHeaders) {
  * @param {String} url
  * @param {JSON} data
  * @param {JSON} reqHeaders 请求头信息
+ * @param {Number} timeout 超时毫秒
  * @returns
  */
-exports.postJSON = function (url, data, reqHeaders) {
+exports.postJSON = function (url, data, reqHeaders, timeout) {
   let opts = nurl.parse(url);
+  opts.timeout = timeout;
   opts.method = 'POST';
   opts.isJson = true;
   opts.headers = reqHeaders || {};
@@ -89,10 +104,12 @@ exports.postJSON = function (url, data, reqHeaders) {
  * @param {String} url
  * @param {JSON} data
  * @param {JSON} reqHeaders 请求头信息
+ * @param {Number} timeout 超时毫秒
  * @returns
  */
-exports.putJSON = function (url, data, reqHeaders) {
+exports.putJSON = function (url, data, reqHeaders, timeout) {
   let opts = nurl.parse(url);
+  opts.timeout = timeout;
   opts.method = 'PUT';
   opts.isJson = true;
   opts.headers = reqHeaders || {};
@@ -106,10 +123,12 @@ exports.putJSON = function (url, data, reqHeaders) {
  * @param {String} url
  * @param {JSON} data
  * @param {JSON} reqHeaders 请求头信息
+ * @param {Number} timeout 超时毫秒
  * @returns
  */
-exports.deleteJSON = function (url, data, reqHeaders) {
+exports.deleteJSON = function (url, data, reqHeaders, timeout) {
   let opts = nurl.parse(url);
+  opts.timeout = timeout;
   opts.method = 'DELETE';
   opts.isJson = true;
   opts.headers = reqHeaders || {};
