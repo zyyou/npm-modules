@@ -46,9 +46,11 @@ mvcrouter.viewGET('/tt', function (ctx) {
 mvcrouter.viewGET('/rest/:id/:name', function (ctx) {
   return {
     title: 'RESTful GET action',
+    view:'index/index',
+    layout:'default',
     content: 'rest req view test  content  id=' + JSON.stringify(ctx.params) + '     query:' + ctx.querystring
   };
-}, null, 'users/index', 'test');
+}, null, 'index/test', 'test');
 
 //RESTful PUT
 mvcrouter.jsonPUT('/rest', async function (ctx) {

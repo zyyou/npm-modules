@@ -83,7 +83,7 @@ async function viewAction(ctx, action, resHeaders, view, layout) {
     data.title = data.title || '';
     data.ctx = data.ctx || ctx;
 
-    let viewData = buildView(ctx, view, layout);
+    let viewData = buildView(ctx, data.view || view, data.layout || layout);
     data.layout = viewData.layout;
 
     resHeaders = resHeaders || {};
@@ -104,7 +104,7 @@ async function viewAction(ctx, action, resHeaders, view, layout) {
 async function reqAction(ctx, action, resHeaders, contentType) {
     let data = await action(ctx);
     //data = data || {};
-    
+
     resHeaders = resHeaders || {};
     resHeaders['Content-Type'] = contentType;
     setHeader(ctx.res, resHeaders);

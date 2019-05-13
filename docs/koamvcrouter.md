@@ -48,12 +48,14 @@ mvcrouter.viewGET('/uv', function (ctx) {
   return {
     title: '这这里自定义test布局'
   };
-}, null, '', 'test');
+}, null, 'uv', 'test'); //指定固定视图uv和固定布局test
 
 mvcrouter.viewGET('/rest/:id/:name', function (ctx) {
   return {
     title: 'RESTful GET action',
-    content: '自定义视图和布局页'
+    content: '自定义视图和布局页',
+    view:'index/index', //动态指定视图
+    layout:'default'  //动态指定布局
   };
 }, null, 'users/index', 'test');
 
