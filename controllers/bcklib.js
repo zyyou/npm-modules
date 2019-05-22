@@ -71,15 +71,20 @@ mvcrouter.textGET('/utils', async function (ctx) {
 
   let res = '---';
 
-  res += '\r\n' + bcklib.sutils.notNullStr('abc');
-  res += '\r\n' + bcklib.sutils.notNullStr(undefined);
-  res += '\r\n' + bcklib.sutils.notNullStr(new Date());
-  res += '\r\n' + bcklib.sutils.notNullStr(null);
-  res += '\r\n' + bcklib.sutils.notNullStr(1.0);
-  res += '\r\n' + bcklib.sutils.notNullStr(true);
-  res += '\r\n' + bcklib.sutils.notNullStr([]);
-  res += '\r\n' + bcklib.sutils.notNullStr(function () { });
-  res += '\r\n' + bcklib.sutils.notNullStr({});
+  res += '\r\n' + bcklib.valueUtils.notNullStr('abc');
+  res += '\r\n' + bcklib.valueUtils.notNullStr(undefined);
+  res += '\r\n' + bcklib.valueUtils.notNullStr(new Date());
+  res += '\r\n' + bcklib.valueUtils.notNullStr(null);
+  res += '\r\n' + bcklib.valueUtils.notNullStr(1.0);
+  res += '\r\n' + bcklib.valueUtils.notNullStr(true);
+  res += '\r\n' + bcklib.valueUtils.notNullStr([]);
+  res += '\r\n' + bcklib.valueUtils.notNullStr(function () { });
+  res += '\r\n' + bcklib.valueUtils.notNullStr({});
+  res += '\r\n-----';
+
+  res += '\r\n' + bcklib.valueUtils.subStrRight('abc123ddd', 4);
+  res += '\r\n' + bcklib.valueUtils.subStrRight('ddd', 4);
+  res += '\r\n' + bcklib.valueUtils.subStrRight(5, 4);
   res += '\r\n-----';
 
   return res;

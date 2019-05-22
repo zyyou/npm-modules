@@ -22,5 +22,23 @@ exports.notNullStr = (value) => {
             return '';
     }
 };
+/**
+ * 从字符串右侧截取指定长度字符，不足指定长度则原样返回，不是string返回''
+ *
+ * @param {*} str 源
+ * @param {*} length 长度
+ * @returns
+ */
+exports.subStrRight = (str, length) => {
+    if ('string' != typeof (str) || length <= 0) {
+        return '';
+    }
+
+    if (str.length <= length) {
+        return str;
+    }
+
+    return str.substring(str.length - length);
+}
 
 
