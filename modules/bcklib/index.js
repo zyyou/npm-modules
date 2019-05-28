@@ -30,8 +30,6 @@ exports.log = require('./src/log');
 exports.cutils = require('./src/client_utils');
 exports.valueUtils = require('./src/value_utils');
 
-exports.cache = require('./src/cache');
-
 exports.config = require('./src/config');
 
 //------------ 以下为过期
