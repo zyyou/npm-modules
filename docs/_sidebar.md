@@ -7,3 +7,4 @@
 - 独立模块
   - [https-sync](httpsync.md)
   - [koa-mvcrouter](koamvcrouter.md)
+  - [cache-ioredis](cache.md)

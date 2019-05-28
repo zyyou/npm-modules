@@ -1,0 +1,23 @@
+{
+  "name": "cache-ioredis",
+  "version": "1.0.0",
+  "dependencies": {
+    "bcklib": "^1.6.0"
+  },
+  "description": "基于redis的缓存封装",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zyyou/npm-modules"
+  },
+  "keywords": [
+    "cache",
+    "redis",
+    "ioredis"
+  ],
+  "author": "zyy",
+  "license": "MIT"
+}

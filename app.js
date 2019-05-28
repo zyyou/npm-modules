@@ -13,6 +13,7 @@ const escapeHtml = require('escape-html');
 
 const bcklib = require('./modules/bcklib');
 const mvcrouter = require('./modules/koa-mvcrouter');
+const cache = require('./modules/cache-ioredis');
 const appConfig = bcklib.config.load();
 
 bcklib.log.init(bcklib.config.load('logconf.js'))
@@ -45,7 +46,8 @@ onerror(app, {
   }
 });
 
-bcklib.cache.init(appConfig.redis);
+//缓存初始化
+cache.init(appConfig.redis);
 
 //布局及视图配置
 render(app, {

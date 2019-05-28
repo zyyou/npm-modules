@@ -1,7 +1,7 @@
 'use strict';
 
 const Redis = require("ioredis");
-const valueUtils = require("./value_utils");
+const {valueUtils} = require("bcklib");
 
 //读写
 let client = null;
