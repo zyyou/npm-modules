@@ -1,8 +1,9 @@
 {
   "name": "cache-ioredis",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "dependencies": {
-    "bcklib": "^1.6.0"
+    "bcklib": "^1.6.0",
+    "ioredis": "^4.9.5"
   },
   "description": "基于redis的缓存封装",
   "main": "index.js",
