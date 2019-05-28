@@ -1,6 +1,6 @@
 {
   "name": "https-sync",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "dependencies": {
     "debug": "^2.6.3",
     "bcklib": "^0.1.0"
@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/zyyou/https-sync"
+    "url": "https://github.com/zyyou/npm-modules"
   },
   "keywords": [
     "http",
