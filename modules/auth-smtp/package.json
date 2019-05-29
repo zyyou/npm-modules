@@ -1,6 +1,6 @@
 {
   "name": "auth-smtp",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "dependencies": {
     "bcklib": "^2.0.0",
     "debug": "^2.6.3"

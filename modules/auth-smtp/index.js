@@ -32,7 +32,7 @@ exports.login = async (email, password, host, port) => {
 
         conn.on("end", (data) => {
             debug('resdata:%s', resData);
-            resolve(bcklib.retMsg(!authOk, authOk ? 'ok' : '登录失败'));
+            resolve(bcklib.retMsg(!authOk, authOk ? 'ok' : '登录失败', resData));
         });
 
         conn.on("data", async (data) => {
