@@ -2,6 +2,7 @@
 
 const bcklib = require('bcklib');
 const net = require('net');
+var debug = require('debug')('auth-smtp');
 
 /**
  * 初始化
@@ -30,7 +31,7 @@ exports.login = async (email, password, host, port) => {
         });
 
         conn.on("end", (data) => {
-            console.log('resdata:', resData);
+            debug('resdata:%s', resData);
             resolve(bcklib.retMsg(!authOk, authOk ? 'ok' : '登录失败'));
         });
 
@@ -42,7 +43,7 @@ exports.login = async (email, password, host, port) => {
             }
             const cmd = command.pop();
             if (cmd) {
-                console.log('cmd', cmd);
+                //console.log('cmd', cmd);
                 await conn.write(cmd + "\r\n");
             }
         });
