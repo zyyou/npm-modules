@@ -8,3 +8,4 @@
   - [https-sync](httpsync.md)
   - [koa-mvcrouter](koamvcrouter.md)
   - [cache-ioredis](cache.md)
+  - [auth-smtp](smtp.md)
