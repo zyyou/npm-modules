@@ -47,7 +47,7 @@ onerror(app, {
 });
 
 //缓存初始化
-cache.init(appConfig.redis);
+//cache.init(appConfig.redis);
 
 //布局及视图配置
 render(app, {

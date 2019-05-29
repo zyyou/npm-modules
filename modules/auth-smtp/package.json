@@ -1,0 +1,24 @@
+{
+  "name": "auth-smtp",
+  "version": "1.0.0",
+  "dependencies": {
+    "bcklib": "^2.0.0"
+  },
+  "description": "SMTP权限认证库",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zyyou/npm-modules"
+  },
+  "keywords": [
+    "smtp",
+    "auth",
+    "smtp-auth",
+    "auth-smtp"
+  ],
+  "author": "zyy",
+  "license": "MIT"
+}
