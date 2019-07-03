@@ -25,7 +25,7 @@ exports.retCode = {
 };
 
 
-exports.log = require('./src/log');
+//exports.log = require('./src/log');
 
 exports.cutils = require('./src/client_utils');
 exports.valueUtils = require('./src/value_utils');
