@@ -1,8 +1,8 @@
 {
   "name": "auth-smtp",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "dependencies": {
-    "bcklib": "^2.0.0",
+    "bcklib": "^2.0.1",
     "debug": "^2.6.3"
   },
   "description": "SMTP权限认证库",
