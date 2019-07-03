@@ -1,6 +1,6 @@
 {
   "name": "yapi-plugin-smtp",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "dependencies": {
     "auth-smtp": "^1.0.3"
   },

@@ -10,9 +10,10 @@ module.exports = function (options) {
     let email = ctx.request.body.email;
     let password = ctx.request.body.password;
 
-    console.log('server', email, password, host, port);
     let res = await auth.login(email, password, host, port);
-    if (!res.hasErr) {
+    if (res.hasErr) {
+      console.log('SMTP登录失败', email, res);
+    } else {
       res = {
         email: email,
         username: email.split('@')[0]
