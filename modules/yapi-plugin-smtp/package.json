@@ -1,0 +1,26 @@
+{
+  "name": "yapi-plugin-smtp",
+  "version": "1.0.2",
+  "dependencies": {
+    "auth-smtp": "^1.0.3"
+  },
+  "description": "YApi SMTP登录插件",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zyyou/npm-modules"
+  },
+  "keywords": [
+    "yapi",
+    "smtp",
+    "yapi-smtp",
+    "smtp-yapi",
+    "yapi-plugin",
+    "yapi-ext"
+  ],
+  "author": "zyy",
+  "license": "MIT"
+}
