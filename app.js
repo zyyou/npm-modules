@@ -12,11 +12,9 @@ const escapeHtml = require('escape-html');
 
 
 const bcklib = require('./modules/bcklib');
-const mvcrouter = require('./modules/koa-mvcrouter');
+const mvcrouter = require('./modules/koa-mvcrouter')();
 const cache = require('./modules/cache-ioredis');
 const appConfig = bcklib.config.load();
-
-bcklib.log.init(bcklib.config.load('logconf.js'))
 
 // 全局异常捕获
 app.on('error', (err, ctx) => {
@@ -72,10 +70,10 @@ app.use(bodyparser({
 }));
 app.use(json());
 //指定静态文件目录，否则不能静态访问
-app.use(require('koa-static')(__dirname + '/docs'));
+//app.use(require('koa-static')(__dirname + '/docs'));
 app.use(require('koa-static')(__dirname + '/public'));
 
 // 注册路由
-app.use(mvcrouter.load());
+mvcrouter.load(app);
 
 module.exports = app;

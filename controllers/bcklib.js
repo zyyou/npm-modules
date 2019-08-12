@@ -1,6 +1,6 @@
 'use strict';
 const moment = require('moment');
-const mvcrouter = require('../modules/koa-mvcrouter');
+const mvcrouter = require('../modules/koa-mvcrouter')();
 const bcklib = require('../modules/bcklib');
 
 //index controller中建议只写此action

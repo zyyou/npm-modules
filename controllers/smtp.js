@@ -1,5 +1,5 @@
 'use strict';
-const mvcrouter = require('../modules/koa-mvcrouter');
+const mvcrouter = require('../modules/koa-mvcrouter')();
 const auth = require('../modules/auth-smtp');
 
 

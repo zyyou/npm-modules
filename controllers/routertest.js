@@ -3,10 +3,10 @@
 const httpSync = require('https-sync');
 const bcklib = require('bcklib');
 
-const mvcrouter = require('../modules/koa-mvcrouter');
+const mvcrouter = require('../modules/koa-mvcrouter')();
 
 mvcrouter.viewGET('/', function (ctx) {
-  console.log('----- test/被执行 ------');
+  console.log('----- test/ ------');
   var res = bcklib.retMsg(false,'',{}, bcklib.retCode.ok);
 
   return {
@@ -17,7 +17,7 @@ mvcrouter.viewGET('/', function (ctx) {
 
 
 mvcrouter.viewGET('/AbC', function (ctx) {
-  console.log('----- test/被执行 ------');
+  console.log('----- test/AbC ------');
   var res = bcklib.retMsg(false,'',{}, bcklib.retCode.ok);
 
   return {

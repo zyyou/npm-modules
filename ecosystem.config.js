@@ -8,8 +8,9 @@ module.exports = {
     env: {
       NODE_ENV: 'development',
       app_config: 'npmmodules.js',
-      config_path:'',
-      config_path_common:'~/config'
+      config_path: '',
+      config_path_common: '~/config',
+      DEBUG: ''
     },
     //应用入口
     script: 'bin/www',
@@ -40,8 +41,8 @@ module.exports = {
     env: {
       NODE_ENV: 'production',
       app_config: 'npmmodules.js',
-      config_path:'~/config',
-      config_path_common:'~/config'
+      config_path: '~/config',
+      config_path_common: '~/config'
     },
     //应用入口
     script: 'bin/www',

@@ -14,7 +14,7 @@ const mvcrouter = require('koa-mvcrouter');
 ## 加载路由
 app.js中
 ```javascript
-app.use(mvcrouter.load());
+mvcrouter.load(app);
 ```
 
 ## 工程结构
