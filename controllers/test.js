@@ -3,7 +3,7 @@
 const mvcrouter = require('../modules/koa-mvcrouter')();
 
 //index controller中建议只写此action
-mvcrouter.viewGET('/', function (ctx) {
+mvcrouter.viewGET('/i', function (ctx) {
   return {
     title: 'test'
   };

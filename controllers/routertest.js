@@ -5,7 +5,7 @@ const bcklib = require('bcklib');
 
 const mvcrouter = require('../modules/koa-mvcrouter')();
 
-mvcrouter.viewGET('/', function (ctx) {
+mvcrouter.viewGET('/index', function (ctx) {
   console.log('----- test/ ------');
   var res = bcklib.retMsg(false,'',{}, bcklib.retCode.ok);
 

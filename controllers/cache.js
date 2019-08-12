@@ -5,7 +5,7 @@ const mvcrouter = require('../modules/koa-mvcrouter')();
 const cache = require('../modules/cache-ioredis');
 
 //测试响应文本且远程获取
-mvcrouter.textGET('/', async function (ctx) {
+mvcrouter.textGET('/i', async function (ctx) {
 
   let res;
 

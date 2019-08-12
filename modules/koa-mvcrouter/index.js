@@ -38,6 +38,10 @@ function buildView(router, ctx, view, layout) {
         view = controller.substring(1) + action
     }
 
+    if (view.endsWith('/')) {
+        view = view.substring(0, view.length - 1);
+    }
+
     if (layout) {
         layout = npath.join('_layout', layout);
     } else {
@@ -145,6 +149,15 @@ function mvcRouter() {
             }
             let router = require(file).getRouter();
             router.prefix(urlPath);
+            //console.log('router', router);
+            if (router.opts.prefix) {
+                let layer = router.stack.filter((val, index, arr) => {
+                    return val.path == router.opts.prefix + '/';
+                });
+                if (layer.length > 0) {
+                    console.log(router.opts.prefix,'不建议使用匿名action，容易造成视图相对路径不规范');
+                }
+            }
             app.use(router.routes(), router.allowedMethods());
             debug('注册路由【%s】：%s', urlPath, file);
         });
@@ -161,7 +174,6 @@ function mvcRouter() {
      * @param {String} layout 布局，为空自动匹配
      */
     this.viewGET = (path, action, resHheaders, view, layout) => {
-        //console.log('kkkkk',koaRouter);
         koaRouter.get(path, async (ctx, next) => {
             await viewAction(koaRouter, ctx, action, resHheaders, view, layout);
         });
