@@ -1,6 +1,12 @@
 # yapi-plugin-smtp 
 
-SMTP登录插件，配置方法如下：   
+# 使用
+```shell
+# 进入yapi工程目录执行
+yapi plugin --name yapi-plugin-smtp 
+```
+
+# SMTP登录插件，配置方法如下：   
 
 第一步： 在生成的配置文件config.json中加入如下配置：  
 

@@ -11,7 +11,7 @@ module.exports = function (options) {
     let password = ctx.request.body.password;
 
     let res = await auth.login(email, password, host, port);
-    if (res.hasErr) {
+    if (res.error) {
       console.log('SMTP登录失败', email, res);
     } else {
       res = {
