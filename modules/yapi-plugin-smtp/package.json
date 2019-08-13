@@ -1,8 +1,8 @@
 {
   "name": "yapi-plugin-smtp",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "dependencies": {
-    "auth-smtp": "^1.0.3"
+    "auth-smtp": "^1.0.4"
   },
   "description": "YApi SMTP登录插件",
   "main": "index.js",
