@@ -3,17 +3,22 @@
 /**
  * 构建公共消息对象
  *
- * @param {Boolean} hasErr 是否有错误 
+ * @param {Boolean} error 是否有错误 
  * @param {String} msg 要返回的消息
  * @param {*} data 要返回的数据
- * @param {Number} code 要返回的消息代码
+ * @param {String} code 要返回的消息代码
  */
-exports.retMsg = (hasErr, msg, data, code) => {
-  hasErr = hasErr ? true : false;
-  msg = msg || '未知';
+exports.retMsg = (error, msg, data, code) => {
+  error = error ? true : false;
+  msg = msg || error ? '未知' : 'ok';
   //data = data || {};
-  code = code || -1;
-  return { hasErr: hasErr, message: msg, data: data, code: code };
+  code = code || '';
+  return {
+    error: error,
+    message: msg,
+    data: data,
+    code: code
+  };
 };
 
 //通用返回代码
@@ -42,9 +47,3 @@ exports.sutils = this.valueUtils;
  * @returns
  */
 exports.loadConfig = this.config.load;
-
-
-
-
-
-
