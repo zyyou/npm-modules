@@ -8,6 +8,8 @@ mvcrouter.jsonGET('/retmsg', function (ctx) {
 
   var retMsg = bcklib.retMsg(true, 'err', '', bcklib.retCode.paramErr);
 
+  console.log(bcklib.retMsg(false,'',{}));
+
   return retMsg;
 });
 

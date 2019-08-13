@@ -10,7 +10,7 @@
  */
 exports.retMsg = (error, msg, data, code) => {
   error = error ? true : false;
-  msg = msg || error ? '未知' : 'ok';
+  msg = msg || (error ? '未知' : 'ok');
   //data = data || {};
   code = code || '';
   return {
