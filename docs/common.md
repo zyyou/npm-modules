@@ -16,7 +16,7 @@ bcklib.retMsg()
         <th>说明</th>
     </tr>
     <tr>
-        <td>hasErr</td>
+        <td>error</td>
         <td>bool</td>
         <td>是否错误响应</td>
     </tr>
@@ -40,7 +40,7 @@ bcklib.retMsg()
 - 出参，将入参序列化为json对象，示例：
 ```javascript
 {
-  "hasErr": false,
+  "error": false,
   "message": "ok",
   "data": {
     "title": "json test",
