@@ -9,8 +9,7 @@ module.exports = function (options) {
   this.bindHook('third_login', async (ctx) => {
     let email = ctx.request.body.email;
     let password = ctx.request.body.password;
-
-    let res = await auth.login(email, password, host, port);
+    let res = await auth.login(email.toLowerCase(), password, host, port);
     if (res.error) {
       console.log('SMTP登录失败', email, res);
     } else {
