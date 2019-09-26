@@ -191,3 +191,25 @@ exports.exists = async (key) => {
     return res;
 };
 
+/**
+ * 删除缓存
+ *
+ * @param {String} key
+ * @returns
+ */
+exports.del = async (key) => {
+    key = valueUtils.notNullStr(key);
+
+    let res = undefined;
+    if (!redisIsOk()) {
+        return res;
+    }
+
+    try {
+        res = await client.del(key);
+    } catch (e) {
+        console.error('删除缓存异常', e);
+    }
+    return res;
+};
+

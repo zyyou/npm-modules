@@ -21,6 +21,29 @@ exports.retMsg = (error, msg, data, code) => {
   };
 };
 
+/**
+ * 构建API消息对象
+ *
+ * @param {Number} retCode  接口调用状态码(SUCCESS等)
+ * @param {String} retMsg   接口调用状态码描述（ok等）
+ * @param {JSON} data
+ * @param {Function} signFun    消息签名函数，retCode=SUCCESS时必须
+ * @returns {JSON} {ret_code:'',ret_msg:'',sign:'',***}
+ */
+exports.apiMsg = (retCode, retMsg, data, signFun) => {
+  if (!data || !validator.isJSON(data.toString())) {
+    data = {
+      data: data
+    };
+  }
+  data.ret_code = retCode;
+  data.ret_msg = retMsg;
+  if ('function' == typeof signFun) {
+    data.sign = signFun(data);
+  }
+  return data;
+};
+
 //通用返回代码
 exports.retCode = {
   unknown: -1,

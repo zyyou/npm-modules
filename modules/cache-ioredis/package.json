@@ -1,6 +1,6 @@
 {
   "name": "cache-ioredis",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "dependencies": {
     "bcklib": "^3.0.0",
     "ioredis": "^4.9.5"

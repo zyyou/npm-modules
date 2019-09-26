@@ -25,6 +25,12 @@ mvcrouter.textGET('/i', async function (ctx) {
   res = await cache.get('testincr');
   console.log('get incr:', res);
 
+
+  res = await cache.del('bcktest');
+  console.log('del bcktest:', res);
+  res = await cache.get('bcktest');
+  console.log('get bcktest:', res);
+
   return 'ok';
 });
 
