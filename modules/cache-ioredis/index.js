@@ -1,7 +1,10 @@
 'use strict';
 
-const Redis = require("ioredis");
-const {valueUtils} = require("bcklib");
+const Redis = require('ioredis');
+const { valueUtils } = require('bcklib');
+
+// 日志对象
+let appLogger = console;
 
 //读写
 let client = null;
@@ -16,10 +19,10 @@ let clientRead = null;
  * @returns
  */
 function redisIsOk(isRead) {
-    if (isRead) {
-        return clientRead && clientRead.status == 'ready';
-    }
-    return client && client.status == 'ready';
+  if (isRead) {
+    return clientRead && clientRead.status == 'ready';
+  }
+  return client && client.status == 'ready';
 }
 
 /**
@@ -28,34 +31,34 @@ function redisIsOk(isRead) {
  * @returns
  */
 function getReadClient() {
-    if (redisIsOk(true)) {
-        return clientRead;
-    } else if (redisIsOk()) {
-        return client;
-    } else {
-        return null;
-    }
+  if (redisIsOk(true)) {
+    return clientRead;
+  } else if (redisIsOk()) {
+    return client;
+  } else {
+    return null;
+  }
 }
 
 function buildOpts(opts, name) {
-    opts = opts || {};
+  opts = opts || {};
 
-    opts.connectTimeout = opts.connectTimeout || 10000;   //初始连接超时毫秒
-    opts.stringNumbers = opts.stringNumbers || true;  //强制数字以字符串返回，解决大数字溢出
-    opts.maxRetriesPerRequest = opts.maxRetriesPerRequest || 1;   //读写失败重试次数
-    opts.enableOfflineQueue = opts.enableOfflineQueue || false;   //禁用离线队列
-    //重连策略
-    if (!opts.retryStrategy) {
-        opts.retryStrategy = (times) => {
-            if (times > 100) {
-                return null;
-            }
-            let delay = Math.min(times * 1000, 5000);
-            console.warn(name, '缓存服务重试第', times, '次，', delay / 1000, '秒后重试');
-            return delay;
-        }
-    }
-    return opts;
+  opts.connectTimeout = opts.connectTimeout || 10000; //初始连接超时毫秒
+  opts.stringNumbers = opts.stringNumbers || true; //强制数字以字符串返回，解决大数字溢出
+  opts.maxRetriesPerRequest = opts.maxRetriesPerRequest || 1; //读写失败重试次数
+  opts.enableOfflineQueue = opts.enableOfflineQueue || false; //禁用离线队列
+  //重连策略
+  if (!opts.retryStrategy) {
+    opts.retryStrategy = times => {
+      if (times > 100) {
+        return null;
+      }
+      let delay = Math.min(times * 1000, 5000);
+      appLogger.warn(name, '缓存服务重试第', times, '次，', delay / 1000, '秒后重试');
+      return delay;
+    };
+  }
+  return opts;
 }
 
 /**
@@ -63,34 +66,36 @@ function buildOpts(opts, name) {
  *
  * @param {JSON} opts 读写库配置
  * @param {JSON} readOpts 只读库配置，不为空时所有读取使用该配置
+ * @param {Object} logger 日志对象，如：console 或 egg的this.ctx.logger
  */
-exports.init = async (opts, readOpts) => {
-    opts = buildOpts(opts, '读写');
-    client = new Redis(opts);
-    client.on('error', function (error) {
-        console.error('缓存服务[读写]异常', error);
-    });
-    client.on('end', function () {
-        console.warn('缓存服务[读写]已断开');
-    });
-    client.on("ready", () => {
-        console.log("缓存服务[读写]准备就绪");
-    });
+exports.init = async (opts, readOpts, logger) => {
+  appLogger = logger || console;
+  opts = buildOpts(opts, '读写');
+  client = new Redis(opts);
+  client.on('error', function(error) {
+    appLogger.error('缓存服务[读写]异常', error);
+  });
+  client.on('end', function() {
+    appLogger.warn('缓存服务[读写]已断开');
+  });
+  client.on('ready', () => {
+    appLogger.info('缓存服务[读写]准备就绪');
+  });
 
-    //初始化只读库
-    if (readOpts) {
-        readOpts = buildOpts(readOpts, '只读');
-        clientRead = new Redis(readOpts);
-        clientRead.on('error', function (error) {
-            console.error('缓存服务[只读]异常', error);
-        });
-        clientRead.on('end', function () {
-            console.warn('缓存服务[只读]已断开');
-        });
-        clientRead.on("ready", () => {
-            console.log("缓存服务[只读]准备就绪");
-        });
-    }
+  //初始化只读库
+  if (readOpts) {
+    readOpts = buildOpts(readOpts, '只读');
+    clientRead = new Redis(readOpts);
+    clientRead.on('error', function(error) {
+      appLogger.error('缓存服务[只读]异常', error);
+    });
+    clientRead.on('end', function() {
+      appLogger.warn('缓存服务[只读]已断开');
+    });
+    clientRead.on('ready', () => {
+      appLogger.info('缓存服务[只读]准备就绪');
+    });
+  }
 };
 
 /**
@@ -102,25 +107,25 @@ exports.init = async (opts, readOpts) => {
  * @returns
  */
 exports.set = async (key, value, second) => {
-    key = valueUtils.notNullStr(key);
-    value = valueUtils.notNullStr(value);
-    second = parseInt(second);
+  key = valueUtils.notNullStr(key);
+  value = valueUtils.notNullStr(value);
+  second = parseInt(second);
 
-    let res = undefined;
-    if (!redisIsOk()) {
-        return res;
-    }
-
-    try {
-        if (isNaN(second) || second < 1) {
-            res = await client.set(key, value);
-        } else {
-            res = await client.setex(key, second, value);
-        }
-    } catch (e) {
-        console.error('写入缓存异常', e);
-    }
+  let res = undefined;
+  if (!redisIsOk()) {
     return res;
+  }
+
+  try {
+    if (isNaN(second) || second < 1) {
+      res = await client.set(key, value);
+    } else {
+      res = await client.setex(key, second, value);
+    }
+  } catch (e) {
+    appLogger.error('写入缓存异常', e);
+  }
+  return res;
 };
 
 /**
@@ -129,21 +134,21 @@ exports.set = async (key, value, second) => {
  * @param {String} key
  * @returns
  */
-exports.get = async (key) => {
-    key = valueUtils.notNullStr(key);
+exports.get = async key => {
+  key = valueUtils.notNullStr(key);
 
-    let cli = getReadClient();
-    if (cli == null) {
-        console.warn('缓存服务不可用，本次请求返回\'\'，key=', key);
-        return '';
-    }
+  let cli = getReadClient();
+  if (cli == null) {
+    appLogger.warn("缓存服务不可用，本次请求返回''，key=", key);
+    return '';
+  }
 
-    try {
-        return valueUtils.notNullStr(await cli.get(key));
-    } catch (e) {
-        console.error('读取缓存异常，本次请求返回\'\'，key=', key, 'e=', e);
-        return '';
-    }
+  try {
+    return valueUtils.notNullStr(await cli.get(key));
+  } catch (e) {
+    appLogger.error("读取缓存异常，本次请求返回''，key=", key, 'e=', e);
+    return '';
+  }
 };
 
 /**
@@ -152,20 +157,20 @@ exports.get = async (key) => {
  * @param {String} key
  * @returns
  */
-exports.incr = async (key) => {
-    key = valueUtils.notNullStr(key);
+exports.incr = async key => {
+  key = valueUtils.notNullStr(key);
 
-    let res = undefined;
-    if (!redisIsOk()) {
-        return res;
-    }
-
-    try {
-        res = await client.incr(key);
-    } catch (e) {
-        console.error('写入缓存异常', e);
-    }
+  let res = undefined;
+  if (!redisIsOk()) {
     return res;
+  }
+
+  try {
+    res = await client.incr(key);
+  } catch (e) {
+    appLogger.error('写入缓存异常', e);
+  }
+  return res;
 };
 
 /**
@@ -174,21 +179,21 @@ exports.incr = async (key) => {
  * @param {String} key
  * @returns
  */
-exports.exists = async (key) => {
-    key = valueUtils.notNullStr(key);
+exports.exists = async key => {
+  key = valueUtils.notNullStr(key);
 
-    let res = undefined;
-    let cli = getReadClient();
-    if (cli == null) {
-        return res;
-    }
-
-    try {
-        res = valueUtils.notNullStr(await cli.exists(key));
-    } catch (e) {
-        console.error('读取缓存异常', e);
-    }
+  let res = undefined;
+  let cli = getReadClient();
+  if (cli == null) {
     return res;
+  }
+
+  try {
+    res = valueUtils.notNullStr(await cli.exists(key));
+  } catch (e) {
+    appLogger.error('读取缓存异常', e);
+  }
+  return res;
 };
 
 /**
@@ -197,19 +202,18 @@ exports.exists = async (key) => {
  * @param {String} key
  * @returns
  */
-exports.del = async (key) => {
-    key = valueUtils.notNullStr(key);
+exports.del = async key => {
+  key = valueUtils.notNullStr(key);
 
-    let res = undefined;
-    if (!redisIsOk()) {
-        return res;
-    }
-
-    try {
-        res = await client.del(key);
-    } catch (e) {
-        console.error('删除缓存异常', e);
-    }
+  let res = undefined;
+  if (!redisIsOk()) {
     return res;
-};
+  }
 
+  try {
+    res = await client.del(key);
+  } catch (e) {
+    appLogger.error('删除缓存异常', e);
+  }
+  return res;
+};
